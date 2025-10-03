@@ -6,6 +6,8 @@ require("dotenv").config();
 const database = require("./config/database");
 database.connect();
 
+const systemConfig = require("./config/system");
+
 const router = require("./routers/clients/index.router");
 const routerAdmin = require("./routers/admin/index.router");
 
@@ -27,6 +29,10 @@ const port = process.env.PORT;
 app.set("views","./views");
 app.set("view engine" , "pug");
 
+
+// App locals Variables
+app.locals.prefixAdmin = systemConfig.prefixAdmin;
+
 app.use(express.static("public"));
 
 // Routers
@@ -40,3 +46,5 @@ app.listen(
         console.log(`xample app listening on port ${port}`)
     }
 )
+
+// 23:32
