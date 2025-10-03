@@ -1,10 +1,17 @@
 const express = require('express');
-// const mongoose = require('mongoose');
-// mongoose.connect('mongodb://127.0.0.1:27017/product-test-18');
+
 require("dotenv").config();
+
+// Ket noi database
+const database = require("./config/database");
+database.connect();
+
 const router = require("./routers/clients/index.router");
 
+
+
 const app = express()
+
 const port = process.env.PORT;  
 
 
