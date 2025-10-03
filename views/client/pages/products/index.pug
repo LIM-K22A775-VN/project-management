@@ -9,17 +9,13 @@ block main
             .col-12
                 +box-head("Danh sach san pham ABC")
         .row
-            .col-4.mb-3
-                .product-item
-                    .inner-image
-                        img(src="https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2022/3/14/1023451/AF54B2E8-69F2-428B-B.jpeg", alt="Anh nui")
-                        // Thẻ img là self-closing, chỉ cần src và alt, không có nội dung bên trong
-                    .inner-content
-                        h3.inner-title iPhone 9
-                        // Tên sản phẩm
-                        .inner-price-new 80$
-                        // Giá mới
-                        .inner-price-old 100$
-                        // Giá cũ
-                        .inner-discount -20%
-                        // Phần trăm giảm giá
+            each item in products
+                .col-4.mb-3
+                    .product-item
+                        .inner-image
+                            img(src=item.thumbnail, alt=item.title)                         
+                        .inner-content
+                            h3.inner-title #{item.title}
+                            .inner-price-new  #{item.priceNew}$
+                            .inner-price-old #{item.price} $
+                            .inner-discount -#{item.discountPercentage}%
