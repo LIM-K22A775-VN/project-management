@@ -1,1 +1,6 @@
 config sinh ra de kiem tra xem du lieu minh dua vao thanh cong hay that bai
+
+system: chua nhung bien trong he thong
+
+ prefixAdmin : PATH_ADMIN : tien to truoc admin
+    

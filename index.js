@@ -7,6 +7,7 @@ const database = require("./config/database");
 database.connect();
 
 const router = require("./routers/clients/index.router");
+const routerAdmin = require("./routers/admin/index.router");
 
 
 
@@ -30,7 +31,7 @@ app.use(express.static("public"));
 
 // Routers
 router(app);
-
+routerAdmin(app);
 
 // app.use(express.static('public'));
 
