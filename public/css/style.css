@@ -1,3 +1,99 @@
-.test{
-    
+/* Header */
+.header {
+    border-bottom: 1px solid #ddd;   /* Tạo viền mỏng màu xám nhạt ở phía dưới header */
+    padding: 10px 0;                 /* Thêm khoảng cách trên dưới bên trong header */
 }
+
+.header .inner-logo img {
+    max-height: 50px;                /* Ảnh logo không cao quá 50px */
+    max-width: 100%;                 /* Ảnh logo co giãn tối đa bằng chiều rộng container */
+}
+
+.header .inner-menu > ul {
+    list-style: none;                /* Bỏ dấu chấm/dấu số mặc định của danh sách ul */
+    padding: 0;                      /* Xóa khoảng cách bên trong mặc định của ul */
+    margin: 0;                       /* Xóa khoảng cách bên ngoài mặc định của ul */
+    display: flex;                   /* Biến ul thành flex container để sắp xếp ngang */
+    align-items: center;             /* Căn các item theo chiều dọc (giữa) */
+    justify-content: flex-end;       /* Đẩy menu sang phía bên phải */
+    flex-wrap: wrap;                 /* Nếu menu dài quá thì tự động xuống dòng */
+}
+
+.header .inner-menu > ul > li {
+    margin-left: 20px;               /* Tạo khoảng cách ngang giữa các mục menu */
+}
+
+.header .inner-menu a {
+    text-decoration: none;           /* Bỏ gạch chân mặc định của link <a> */
+}
+/* End Header */
+
+/* Footer */
+.footer {
+    background: #333;                /* Màu nền footer là xám đậm */
+    color: #fff;                     /* Màu chữ trắng để nổi bật trên nền tối */
+    text-align: center;              /* Căn giữa nội dung trong footer */
+    padding: 10px;                   /* Thêm khoảng cách bên trong footer */
+}
+/* End footer */
+
+/* box-head */
+.box-head{
+    margin-bottom: 30px;
+}
+.box-head .inner-title{
+    margin-bottom:0;
+    font-size: 28px;
+    font-weight: 600;
+    color:green;
+}
+/* end box head */
+
+/* product-item */
+.product-item{
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.product-item .inner-image{
+    width: 100%;
+    aspect-ratio: 4/3;
+    border-bottom :1px solid #ddd;
+}
+.product-item .inner-image img{
+    width: 100%;
+    height:100%;
+    object-fit: cover;
+}
+.product-item .inner-content{
+    padding: 15px;
+}    
+
+.product-item .inner-content .inner-title{
+    font-size: 20px;
+    font-weight: 600;
+}
+.product-item .inner-content .inner-price-new{
+    font-size: 18px;
+    font-weight: 600;
+    color: green;
+}
+
+.product-item .inner-content .inner-price-old{
+    font-size: 18px;
+    font-weight: 600;
+    color: red;
+    text-decoration: line-through;
+}
+
+.product-item .inner-content .inner-discount{
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    background: red;
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 8px;
+}
+
+/* End product */
