@@ -49,3 +49,61 @@ a{
     border-bottom: 1px solid #515151;
 }
 /* End Sider */
+
+
+/* Start dropdown */
+/* Khối chứa dropdown */
+.dropdown {
+  position: relative;
+  display: inline-block;
+  margin-left: 4px;
+}
+
+/* Nút bấm dropdown */
+.dropdown-btn {
+  background-color: transparent;
+  color: #007bff;
+  border: 1px solid #007bff;
+  padding: 5px 10px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.dropdown-btn:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Menu bên trong */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  min-width: 150px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  z-index: 100;
+  margin-top: 2px;
+}
+
+/* Mỗi mục trong menu */
+.dropdown-content a {
+  color: #333;
+  padding: 8px 12px;
+  text-decoration: none;
+  display: block;
+  transition: 0.2s;
+}
+
+.dropdown-content a:hover {
+  background-color: #f2f2f2;
+}
+
+.dropdown.show .dropdown-content {
+  display: block;
+}
+
+/* End dropdown */
