@@ -18,14 +18,6 @@ const app = express()
 const port = process.env.PORT;  
 
 
-// const Product = mongoose.model('Product',{ 
-//     title: String,
-//     price: Number,
-//     thumbnail: String
-// }); 
-
-
-
 app.set("views","./views");
 app.set("view engine" , "pug");
 
@@ -48,3 +40,4 @@ app.listen(
 )
 
 // 23:32
+// 58:13
