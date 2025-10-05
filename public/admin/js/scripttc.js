@@ -28,14 +28,33 @@ if (buttonsStatus.length > 0) {
 
             // Nếu status tồn tại (không phải null hay undefined)
             if (status) {
-                url.searchParams.set("status", status);              
+                url.searchParams.set("status", status);
+            } else {
+                url.searchParams.delete("status");
             }
-            else{
-                url.searchParams.delete("status");               
-            }
-             window.location.href = url.toString();
+            window.location.href = url.toString();
         });
     });
 }
-
 // Button Status 
+
+
+
+// Form Search 
+const formSearch = document.querySelector("#form-search");
+if (formSearch) {
+    let url = new URL(window.location.href);
+    formSearch.addEventListener("submit", (e) => {
+        e.preventDefault(); // ngăn sự kiện mặc định -> k load dc lại trang
+        console.log(e.target.elements.keyword.value); // lấy ra name khi mình nhập vào
+        // Nếu status tồn tại (không phải null hay undefined)
+        const keyword = e.target.elements.keyword.value;
+        if (keyword) {
+            url.searchParams.set("keyword", keyword);
+        } else {
+            url.searchParams.delete("keyword");
+        }
+        window.location.href = url.toString();
+    });
+}
+//END Form Search 

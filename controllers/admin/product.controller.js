@@ -50,6 +50,15 @@ module.exports.index = async (req, res) => {
     if (req.query.status) {
         find.status = req.query.status;
     }
+    //tính năng tìm kiếm
+    if (req.query.keyword) {
+        let keyword = req.query.keyword.replace(/\+/g, " ");
+        find.title = new RegExp(keyword, "i"); // "i" để không phân biệt chữ hoa thường
+    }
+    // Nếu keyword = "iPhone", thì dòng đó tương đương với /iPhone/i.
+    // MongoDB hiểu $regex (regular expression) là biểu thức tìm kiếm theo mẫu,
+    //  nên nó sẽ đi quét qua mọi document trong collection products 
+    //  để tìm các bản ghi có title khớp với mẫu /iPhone/i.
 
     const products = await Product.find(find);
     res.render("admin/pages/products/index.pug", {
