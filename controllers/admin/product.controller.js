@@ -1,7 +1,8 @@
 const Product = require("../../models/product.model.js")
-
+// Đây là model trong Mongoose — nó đại diện cho một bảng (collection) trong MongoDB.
 const filterStatusHelper = require("../../helpers/filterStatus.js")
 const searchHelper = require("../../helpers/search.js")
+const paginationHelper = require("../../helpers/pagination.js")
 
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
@@ -13,6 +14,8 @@ module.exports.index = async (req, res) => {
     let find = {
         deleted: false
     }
+
+
 
     //Start Đoạn bộ lọc
     const filterStatus = filterStatusHelper(req);
@@ -31,44 +34,16 @@ module.exports.index = async (req, res) => {
 
 
     //Start Pagination - Phân trang
-    let objectPagination = {
-        currentPage: 1, // trang hiện tại , gs = 1
-        limitItems: 4 // tối đa bao nhiêu sản phẩm
-
-    };
-    if (req.query.page != null && !isNaN(req.query.page)) {
-        objectPagination.currentPage = parseInt(req.query.page) > 1 ?
-            parseInt(req.query.page) : objectPagination.currentPage; // trang hiện tại đang truyền lên url
-
-
-    }
-    objectPagination.skip = (objectPagination.currentPage - 1) * objectPagination.limitItems;
-
     const countProducts = await Product.countDocuments(find); // userModel.countDocuments : lấy ra số lượng pt
-    // lấy số sản phẩm
-    // 1. Product
-    // Đây là model trong Mongoose — nó đại diện cho một bảng (collection) trong MongoDB.
-    // console.log(countProducts);
-
-    const totalPage = Math.ceil(countProducts / objectPagination.limitItems); // đếm số trang
-    //ceil : làm tròn lên 
-    objectPagination.totalPage = totalPage;
-
-    // xử lý start end cho phân trang
-    
-    if (objectPagination.currentPage == 1) {
-        objectPagination.start = 1
-        objectPagination.end = 3
-    } else if (objectPagination.currentPage == objectPagination.totalPage) {
-        objectPagination.start = objectPagination.totalPage - 2
-        objectPagination.end = objectPagination.totalPage
-    }else{
-        objectPagination.start = objectPagination.currentPage - 1
-        objectPagination.end = objectPagination.currentPage + 1
-    }
-
-    
+    let objectPagination = paginationHelper({
+            currentPage: 1, // trang hiện tại , gs = 1
+            limitItems: 4, // tối đa bao nhiêu sản phẩm         
+        },
+        req,
+        countProducts
+    );
     //End Pagination
+
 
     const products = await Product.find(find)
         .limit(objectPagination.limitItems) // giới hạn 4 sản phẩm

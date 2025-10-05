@@ -29,6 +29,7 @@ if (buttonsStatus.length > 0) {
             // Nếu status tồn tại (không phải null hay undefined)
             if (status) {
                 url.searchParams.set("status", status);
+                url.searchParams.set("page", 1); // khi click vào thì cho page về vị trí 1
             } else {
                 url.searchParams.delete("status");
             }
@@ -51,6 +52,7 @@ if (formSearch) {
         const keyword = e.target.elements.keyword.value;
         if (keyword) {
             url.searchParams.set("keyword", keyword);
+            url.searchParams.set("page", 1); // khi click vào thì cho page về vị trí 1
         } else {
             url.searchParams.delete("keyword");
         }
