@@ -1,5 +1,6 @@
-const Product = require("../../models/product.model")
+const Product = require("../../models/product.model.js")
 
+const filterStatusHelper = require("../../helpers/filterStatus.js")
 
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
@@ -7,43 +8,10 @@ module.exports.index = async (req, res) => {
     // console.log(req.query); // trả ra { status: 'active' }
     // console.log(req.query.status); // trả ra active
 
-    // vẽ ra các nút Hoạt động ,dừng hoạt động ,tất cả
-    let filterStatus = [
-        {
-            name:"Tất cả",
-            status:"",
-            class:"" //active để bôi xanh nút bấm vào
-        },
-        {
-            name:"Hoạt động",
-            status:"active",
-            class:""
-        },
-        {
-            name:"Dừng hoạt động",
-            status:"inactive",
-            class:""
-        },
-    ];
+   //Đoạn bộ lọc
 
-    // if(req.query.status){
-    //     filterStatus.forEach((item) =>{
-    //         if(item.status === req.query.status){
-    //             item.class = "active";
-    //         }
-    //         else{
-    //              item.class = "";
-    //         }
-    //     })
-    // }
-    if(req.query.status){
-        // lấy ra phần tử đó và gán active cho class
-        filterStatus.find(item => item.status == req.query.status).class = "active";
-    }
-    else{
-        filterStatus.find(item => item.status == "").class = "active";
-        // filterStatus[0].class = "active";
-    }
+    const filterStatus = filterStatusHelper(req);
+    console.log(filterStatus);
     let find = {
         deleted: false
     }
@@ -51,8 +19,9 @@ module.exports.index = async (req, res) => {
         find.status = req.query.status;
     }
     //tính năng tìm kiếm
+    let keyword ="";
     if (req.query.keyword) {
-        let keyword = req.query.keyword.replace(/\+/g, " ");
+        keyword = req.query.keyword.trim();
         find.title = new RegExp(keyword, "i"); // "i" để không phân biệt chữ hoa thường
     }
     // Nếu keyword = "iPhone", thì dòng đó tương đương với /iPhone/i.
@@ -66,9 +35,15 @@ module.exports.index = async (req, res) => {
         products: products,
         filterStatus:filterStatus,
         name: req.query.status == "active" ? "Đang hoạt động" : req.query.status == "inactive"?
-        "Dừng hoạt động" : "Tất cả" 
+        "Dừng hoạt động" : "Tất cả" ,
+        keyword : keyword
     });
 } // tem ham la index
+
+
+
+
+
 module.exports.create = (req, res) => {
     res.render("admin/pages/products/index.pug");
 } // tem ham la index
