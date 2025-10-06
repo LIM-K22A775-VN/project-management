@@ -44,7 +44,6 @@ module.exports.index = async (req, res) => {
     );
     //End Pagination
 
-
     const products = await Product.find(find)
         .limit(objectPagination.limitItems) // giới hạn 4 sản phẩm
         .skip(objectPagination.skip); // bỏ qua bao nhiêu sản phẩm
@@ -60,7 +59,19 @@ module.exports.index = async (req, res) => {
     });
 } // tem ham la index
 
+// [GET] /admin/products/changestatus/:status/:id
+//thay đổi trạng thái hoạt động dừng hoạt động cho sản phẩm
+module.exports.changeStatus = async (req, res) => {
+    //  console.log(req.params); 
+     //{ status: 'active', id: '123' } lấy được thông tin trên url
+    // res.render("admin/pages/products/index.pug");
+    const status = req.params.status;
+    const id = req.params.id;
+    //update database
+    await Product.updateOne({_id : id} , {status : status });
+    res.redirect(req.get("Referer"|| "/admin/products"));
 
+}
 
 
 

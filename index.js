@@ -1,5 +1,5 @@
 const express = require('express');
-
+const methodOverride = require('method-override');
 require("dotenv").config();
 
 // Ket noi database
@@ -17,16 +17,15 @@ const app = express()
 
 const port = process.env.PORT;  
 
-
 app.set("views","./views");
 app.set("view engine" , "pug");
-
 
 // App locals Variables
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
 
 app.use(express.static("public"));
 
+app.use(methodOverride('_method'));
 // Routers
 router(app);
 routerAdmin(app);
