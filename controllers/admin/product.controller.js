@@ -59,18 +59,36 @@ module.exports.index = async (req, res) => {
     });
 } // tem ham la index
 
-// [GET] /admin/products/changestatus/:status/:id
+// [PATCH] /admin/products/changestatus/:status/:id
 //thay đổi trạng thái hoạt động dừng hoạt động cho sản phẩm
 module.exports.changeStatus = async (req, res) => {
     //  console.log(req.params); 
      //{ status: 'active', id: '123' } lấy được thông tin trên url
     // res.render("admin/pages/products/index.pug");
-    const status = req.params.status;
+    const status = req.params.status; // ;lấy thông tin trên url
     const id = req.params.id;
     //update database
     await Product.updateOne({_id : id} , {status : status });
     res.redirect(req.get("Referer"|| "/admin/products"));
 
+}
+// thay doi trang thai nhieu san pham
+// PATCH /admin/products/change-multi 
+module.exports.changeMulti = async (req, res) => {
+    // console.log(req.body); // đây là mình gửi từ public lên
+    const type = req.body.type; // kiểu
+    const ids = req.body.ids.split(", ");
+    switch (type) {
+        case "active":
+        case "inactive" :
+            await Product.updateMany({_id : {$in: ids}} , {status : type });
+            break;
+        case "delete":
+            break;     
+        default:
+            break;
+    }
+    res.redirect(req.get("Referer"|| "/admin/products"));
 }
 
 

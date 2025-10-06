@@ -54,3 +54,33 @@ window.addEventListener("click", function(event) {
     document.querySelectorAll('.dropdown.show').forEach(d => d.classList.remove('show'));
   }
 }); 
+
+// //Start Checkbox Multi 
+// const checkboxMulti = document.querySelector("[checkbox-multi]");
+// if (checkboxMulti) {
+//     const inputCheckAll = checkboxMulti.querySelector("input[name=checkall]");
+//     const inputsId = checkboxMulti.querySelectorAll("input[name=id]")
+
+//     inputCheckAll.addEventListener("click", () => {
+//         inputsId.forEach((input) => {
+//             input.checked = inputCheckAll.checked;
+//         });
+//     });
+
+//     inputsId.forEach((input) => {
+//         input.addEventListener("click",() => {
+//             // Lọc ra tất cả ô được chọn (chuyển về mảng mới dùng đc find filter)
+//             const checkedInputs = Array.from(inputsId).filter(input => input.checked);
+//             if (checkedInputs) {
+//                 inputCheckAll.checked = true;
+//             }
+//             //tìm ra 1 phần tử mà chưa đc chọn 
+//             const found = Array.from(inputsId).find(input => !input.checked);
+//             if (found) {
+//                 inputCheckAll.checked = false;
+//             }
+//         });
+//     });
+
+// }
+// //End Checkbox Multi 
