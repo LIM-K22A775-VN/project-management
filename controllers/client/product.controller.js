@@ -5,7 +5,7 @@ module.exports.index = async (req, res) => {
     const products = await Product.find({
         status: "active", // tim nhung thang dang hoat dong
         deleted: false // tim nhung thang chua XOA
-    });
+    }).sort({position : "desc"}) // asc : tăng dần , desc : giảm dần;
 
     const newProduct =  products.map( (item) => {
         item.priceNew =  (item.price *(1 - item.discountPercentage/100)).toFixed(2); 

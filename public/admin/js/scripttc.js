@@ -115,28 +115,34 @@ if (formChangeMulti) {
         const inputsChecked = checkboxMulti.querySelectorAll("input[name=id]:checked");
 
         const typeChange = e.target.elements.type.value;
-            if(typeChange == "delete-all"){
-                const isconfirm = confirm("Bạn có chắc muốn xóa không?");
-                if(!isconfirm){
-                    return;
-                }
+        if (typeChange == "delete-all") {
+            const isconfirm = confirm("Bạn có chắc muốn xóa không?");
+            if (!isconfirm) {
+                return;
             }
+        }
 
-        if(inputsChecked.length>0){        
+        if (inputsChecked.length > 0) {
             // let ids = Array.from(inputsChecked).map(input => input.value);
             // console.log(ids);
-            let ids =[];
+            let ids = [];
             const inputIds = formChangeMulti.querySelector("input[name=ids]"); //pt input text
-            
+
             inputsChecked.forEach(
-                input =>{
-                    ids.push(input.value)
+                input => {
+
+                    if (typeChange == "change-position") {
+                        const position = input.closest("tr").querySelector("input[name='position']").value;
+                        ids.push(`${input.value}-${position}`);
+                    } else {
+                        ids.push(input.value)
+                    }
                 }
             );
-            inputIds.value =ids.join(", ");
+            inputIds.value = ids.join(", ");
 
             formChangeMulti.submit();
-        }else{
+        } else {
             alert("Vui lòng chọn ít nhất 1 bản ghi");
         }
     });
@@ -146,12 +152,12 @@ if (formChangeMulti) {
 
 //Thùng rác
 const thungrac = document.querySelector("[thungrac]");
-if(thungrac){
+if (thungrac) {
     console.log("ok");
     const formThungrac = document.querySelector("#form-thungrac");
-     thungrac.addEventListener("click",()=>{
+    thungrac.addEventListener("click", () => {
         formThungrac.action = formThungrac.getAttribute("data-path");
         formThungrac.submit();
-     });
+    });
 }
 //Thùng rác
