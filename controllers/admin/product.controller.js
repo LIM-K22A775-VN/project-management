@@ -81,8 +81,12 @@ module.exports.changeMulti = async (req, res) => {
         case "inactive" :
             await Product.updateMany({_id : {$in: ids}} , {status : type });
             break;
-        case "delete":
-            break;     
+        case "delete-all":
+            await Product.updateMany({_id : {$in: ids}} , {
+                deleted : true,
+                deletedAt: new Date()
+             });
+            break;       
         default:
             break;
     }
@@ -102,6 +106,9 @@ module.exports.deleteItem = async (req, res) => {
     res.redirect(req.get("Referer"|| "/admin/products"));
 }
 
+module.exports.thungrac = (req, res) => {
+    res.render("admin/pages/thungrac/index.pug");
+} 
 module.exports.create = (req, res) => {
     res.render("admin/pages/products/index.pug");
 } // tem ham la index

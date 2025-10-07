@@ -25,7 +25,12 @@ block main
     .card-header Danh sách sản phẩm
     .card-body
       +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`)
-
+      // Cột phải: nút thùng rác
+      button(
+        class = "btn btn-danger"
+        thungrac
+      )
+        i.fas.fa-trash
       table(
         class="table table-hover table-sm"
         checkbox-multi
@@ -93,8 +98,8 @@ block main
    ) 
   form(
     action=""
-    method="post"
-    id="form-delete-item"
-    data-path = `${prefixAdmin}/products/delete`
-   ) 
+    method="get"
+    id="form-thungrac"
+    data-path = `${prefixAdmin}/products/thungrac`
+  ) 
   script(src="/admin/js/product.js") 

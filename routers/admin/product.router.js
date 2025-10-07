@@ -12,6 +12,7 @@ router.patch('/change-status/:status/:id', controller.changeStatus); // thay Ä‘á
 router.patch('/change-multi/', controller.changeMulti);
 
 router.delete('/delete/:id', controller.deleteItem);
+router.get('/thungrac', controller.thungrac);
 
 
 router.get('/create', controller.create);

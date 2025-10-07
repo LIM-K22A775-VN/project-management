@@ -113,6 +113,15 @@ if (formChangeMulti) {
         e.preventDefault(); // ngăn ngừa hành động mặc định : không cho gửi
         const checkboxMulti = document.querySelector("[checkbox-multi]");
         const inputsChecked = checkboxMulti.querySelectorAll("input[name=id]:checked");
+
+        const typeChange = e.target.elements.type.value;
+            if(typeChange == "delete-all"){
+                const isconfirm = confirm("Bạn có chắc muốn xóa không?");
+                if(!isconfirm){
+                    return;
+                }
+            }
+
         if(inputsChecked.length>0){        
             // let ids = Array.from(inputsChecked).map(input => input.value);
             // console.log(ids);
@@ -133,3 +142,16 @@ if (formChangeMulti) {
     });
 }
 //End Form change Multi 
+
+
+//Thùng rác
+const thungrac = document.querySelector("[thungrac]");
+if(thungrac){
+    console.log("ok");
+    const formThungrac = document.querySelector("#form-thungrac");
+     thungrac.addEventListener("click",()=>{
+        formThungrac.action = formThungrac.getAttribute("data-path");
+        formThungrac.submit();
+     });
+}
+//Thùng rác
