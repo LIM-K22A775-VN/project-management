@@ -117,7 +117,7 @@ module.exports.deleteItem = async (req, res) => {
         deleted : true,    //update truong delete : false / true
         deletedAt: new Date()
     });
-    
+    req.flash('success' , `Xóa sản phẩm thành công`);
     res.redirect(req.get("Referer"|| "/admin/products"));
 }
 
@@ -130,3 +130,4 @@ module.exports.create = (req, res) => {
 module.exports.edit = (req, res) => {
     res.render("admin/pages/products/index.pug");
 } // tem ham la edit
+
