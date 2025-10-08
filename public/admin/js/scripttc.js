@@ -153,7 +153,7 @@ if (formChangeMulti) {
 //Thùng rác
 const thungrac = document.querySelector("[thungrac]");
 if (thungrac) {
-    console.log("ok");
+    // console.log("ok");
     const formThungrac = document.querySelector("#form-thungrac");
     thungrac.addEventListener("click", () => {
         formThungrac.action = formThungrac.getAttribute("data-path");
@@ -161,3 +161,19 @@ if (thungrac) {
     });
 }
 //Thùng rác
+
+
+// show-alert
+const showAlert = document.querySelector("[show-alert]");
+if (showAlert) {
+    const timeEnd = showAlert.getAttribute("data-time");
+    const closeAlert = showAlert.querySelector("[close-alert]");
+    setTimeout(() => {
+      showAlert.classList.add("alert-hidden");
+    }, parseInt(timeEnd));
+    closeAlert.addEventListener("click",()=>{
+        showAlert.classList.add("alert-hidden");
+    });
+}
+
+// END show-alert

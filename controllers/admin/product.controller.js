@@ -68,7 +68,12 @@ module.exports.changeStatus = async (req, res) => {
     const id = req.params.id;
     //update database
     await Product.updateOne({_id : id} , {status : status });
-    res.redirect(req.get("Referer"|| "/admin/products"));
+    // in thông báo thành công
+    req.flash('success' , 'Cập nhật trạng thái thành công');
+    // console.log(m);
+    res.redirect(req.get("Referer"|| "/admin/products") ,
+
+);
 
 }
 // thay doi trang thai nhieu san pham
@@ -81,12 +86,14 @@ module.exports.changeMulti = async (req, res) => {
         case "active":
         case "inactive" :
             await Product.updateMany({_id : {$in: ids}} , {status : type });
+            req.flash('success' , `Cập nhật trạng thái ${ids.length} sản phẩm thành công`);
             break;
         case "delete-all":
             await Product.updateMany({_id : {$in: ids}} , {
                 deleted : true,
                 deletedAt: new Date()
              });
+             req.flash('success' , `Xóa ${ids.length} sản phẩm thành công`);
             break;       
         case "change-position":
             for (const item of ids) {
