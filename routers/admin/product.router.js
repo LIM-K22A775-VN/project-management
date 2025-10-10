@@ -16,6 +16,7 @@ router.get('/thungrac', controller.thungrac);
 
 
 router.get('/create', controller.create);
+router.post('/create', controller.createPost);
 
 router.get('/edit', controller.edit);
 

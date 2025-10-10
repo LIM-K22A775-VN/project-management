@@ -43,7 +43,7 @@ app.use(flash());
 //flashs
 
 // App locals Variables
-app.locals.prefixAdmin = systemConfig.prefixAdmin;
+app.locals.prefixAdmin = systemConfig.prefixAdmin; // chỉ đc dùng trong file pug
 
 app.use(express.static("public"));
 

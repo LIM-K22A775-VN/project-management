@@ -3,7 +3,7 @@ const Product = require("../../models/product.model.js")
 const filterStatusHelper = require("../../helpers/filterStatus.js")
 const searchHelper = require("../../helpers/search.js")
 const paginationHelper = require("../../helpers/pagination.js")
-
+const systemConfig = require("../../config/system.js")
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
     // khi nhập   http://localhost:3000/admin/products?status=active  
@@ -125,10 +125,36 @@ module.exports.deleteItem = async (req, res) => {
 module.exports.thungrac = (req, res) => {
     res.render("admin/pages/thungrac/index.pug");
 } 
-module.exports.create = (req, res) => {
-    res.render("admin/pages/products/index.pug");
-} // tem ham la index
+
+// [GET] /admin/products/create
+module.exports.create = async (req, res) => {
+    res.render("admin/pages/products/create.pug", {
+        pageTitle: "Thêm mới sản phẩm",
+    });
+} 
+//[POST] /admin/products/create
+module.exports.createPost = async (req, res) => {
+    
+    req.body.price = parseFloat(req.body.price);
+    req.body.discountPercentage = parseFloat(req.body.discountPercentage);
+    req.body.stock = parseFloat(req.body.stock);
+
+    if(req.body.position){        
+        req.body.position = parseFloat(req.body.position);
+    }
+    else{
+        const count = await Product.countDocuments();
+        req.body.position = count + 1;
+    }
+    console.log(req.body);
+    const product = new Product(req.body); // tạo mới 1 sản phấm ở bên phía mô đồ
+    await product.save(); // lưu vào db
+    req.flash('success' , `Thêm sản phẩm thành công`);
+    res.redirect(`${systemConfig.prefixAdmin}/products`);
+} 
+
+
 module.exports.edit = (req, res) => {
     res.render("admin/pages/products/index.pug");
-} // tem ham la edit
+} 
 
