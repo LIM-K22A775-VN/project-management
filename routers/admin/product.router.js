@@ -1,5 +1,12 @@
 const express = require('express');
 
+const multer = require('multer') // dùng để upload ảnh
+
+
+// const upload = multer({ dest: './public/uploads' }) //dest : duong dan luu img
+const storageMulter = require("../../helpers/storageMulter"); // biến tên và đường dẫn ảnh upload từ file
+const upload = multer({ storage: storageMulter(multer) }) 
+
 const router = express.Router();
 
 const controller = require("../../controllers/admin/product.controller");
@@ -16,7 +23,13 @@ router.get('/thungrac', controller.thungrac);
 
 
 router.get('/create', controller.create);
-router.post('/create', controller.createPost);
+
+// name="thumbnail" → phải trùng với upload.single("thumbnail").
+router.post(
+    '/create',
+    upload.single("thumbnail"), 
+    controller.createPost
+);
 
 router.get('/edit', controller.edit);
 

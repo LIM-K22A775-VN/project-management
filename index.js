@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const flash = require('express-flash'); 
 require("dotenv").config();
 
+
 // Ket noi database
 const database = require("./config/database");
 database.connect();
@@ -64,4 +65,4 @@ app.listen(
     }
 )
 
-//1:23
+//1:28

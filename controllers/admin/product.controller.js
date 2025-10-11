@@ -146,7 +146,11 @@ module.exports.createPost = async (req, res) => {
         const count = await Product.countDocuments();
         req.body.position = count + 1;
     }
-    console.log(req.body);
+    req.body.thumbnail = `/uploads/${req.file.filename}`;
+    // console.log(req.body);
+    console.log(req.body.thumbnail);
+    // Với text fields (như title) → Multer bỏ vào req.body.
+    // Với file fields (như thumbnail) → Multer bỏ vào req.file hoặc req.files.
     const product = new Product(req.body); // tạo mới 1 sản phấm ở bên phía mô đồ
     await product.save(); // lưu vào db
     req.flash('success' , `Thêm sản phẩm thành công`);
