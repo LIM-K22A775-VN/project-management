@@ -34,6 +34,12 @@ router.post(
     controller.createPost
 );
 
-router.get('/edit', controller.edit);
+router.get('/edit/:id', controller.edit);
+
+router.patch('/edit/:id', 
+    upload.single("thumbnail"), 
+    productValidate.creatPost, // điều kiện của các biến 
+    controller.editPatch
+);
 
 module.exports = router;

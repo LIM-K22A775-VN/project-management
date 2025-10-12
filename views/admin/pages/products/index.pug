@@ -7,6 +7,7 @@ include ../../mixins/form-change-multi.pug
 include ../../mixins/alert.pug
 block main
   +alert-success("5000")
+  +alert-error("5000")
   h1 Trang danh sách sản phẩm
   .dropdown.ml-1
     button.dropdown-btn(type="button" onclick="toggleDropdown(this)") #{name}
@@ -87,10 +88,10 @@ block main
                   class="badge bg-danger"
                   ) Dừng Hoạt động
             td 
-              button(
-                class="btn btn-warning btn-sm"
-
-                ) Sửa
+              a(
+              href=`${prefixAdmin}/products/edit/${item.id}`
+              class="btn btn-warning btn-sm"
+              ) Sửa
               |  
               button(
                 class="btn btn-danger btn-sm ml-1"
