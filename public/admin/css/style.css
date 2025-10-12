@@ -1,6 +1,6 @@
-* {
+/* * {
   margin-bottom: 10px;
-}
+} */
 a{
     text-decoration: none;
 }
@@ -155,4 +155,46 @@ table{
 
 /* show Alert  */
 
+/* .form-group{
+  display: flex;
+} */
 
+
+
+
+
+
+/*-------------------- Start IMG File  --------------------*/
+
+/* nút xóa ảnh  */
+[upload-image-cancel] {
+  position: absolute;
+  top: 6px;
+  right: -8px;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  padding: 0;
+  border-radius: 50%;
+  background: rgb(4, 12, 0);
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: none;
+  line-height: 20px;
+  text-align: center;
+}
+/*end nút xóa ảnh  */
+/* hiển thị ảnh sau khi click */
+.image-preview{
+  width: 150px; 
+  height: auto;
+  margin-top: 15px;
+  border:1px solid #ddd;
+  border-radius: 5px;
+}
+.image-preview[src=""]{
+  display: none;
+}
+/*end hiển thị ảnh sau khi click */
+/*-------------------- End IMG File  --------------------*/

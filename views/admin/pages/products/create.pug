@@ -9,7 +9,7 @@ block main
         method="POST"
         enctype="multipart/form-data"
     )
-        div(class ="form-group")
+        div(class ="form-group")         
           label(for="title") Tiêu đề
           input(
             type="text"
@@ -56,15 +56,29 @@ block main
             value="0"
             min="0"
           )
-        div(class ="form-group")
+        div.form-group.d-flex.gap-2.align-items-start(upload-image)
           label(for="thumbnail") Ảnh
-          input(
-            type="file"
-            class="form-control-file" 
-            id="thumbnail" 
-            name="thumbnail"
-            accept="image/*"
+          input#thumbnail.form-control-file(
+            type="file",
+            name="thumbnail",
+            accept="image/*",
+            style="display:none",
+            upload-image-input
           )
+          button(type="button", fake-file) Chọn ảnh
+        div.preview-wrapper(style="position: relative; display: inline-block;")
+          img(
+          src="",
+          alt="",
+          upload-image-preview,
+          class="image-preview"
+        )
+          button(
+          type="button",
+          upload-image-cancel,
+        ) X
+           
+
         div(class ="form-group")
           label(for="position") Vị trí
           input(
