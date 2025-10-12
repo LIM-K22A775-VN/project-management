@@ -1,7 +1,7 @@
 const express = require('express');
 
 const multer = require('multer') // dùng để upload ảnh
-
+const productValidate = require("../../validates/admin/product.validate.js")
 
 // const upload = multer({ dest: './public/uploads' }) //dest : duong dan luu img
 const storageMulter = require("../../helpers/storageMulter"); // biến tên và đường dẫn ảnh upload từ file
@@ -28,6 +28,9 @@ router.get('/create', controller.create);
 router.post(
     '/create',
     upload.single("thumbnail"), 
+
+    productValidate.creatPost, // điều kiện của các biến 
+
     controller.createPost
 );
 

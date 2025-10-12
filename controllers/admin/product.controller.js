@@ -4,6 +4,7 @@ const filterStatusHelper = require("../../helpers/filterStatus.js")
 const searchHelper = require("../../helpers/search.js")
 const paginationHelper = require("../../helpers/pagination.js")
 const systemConfig = require("../../config/system.js")
+// const productValidate = require("../../validates/admin/product.validate.js")
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
     // khi nhập   http://localhost:3000/admin/products?status=active  
@@ -135,6 +136,10 @@ module.exports.create = async (req, res) => {
 //[POST] /admin/products/create
 module.exports.createPost = async (req, res) => {
     
+    // if(!productValidate.creatPost(req, res)){
+    //     return;
+    // }
+    
     req.body.price = parseFloat(req.body.price);
     req.body.discountPercentage = parseFloat(req.body.discountPercentage);
     req.body.stock = parseFloat(req.body.stock);
@@ -146,11 +151,14 @@ module.exports.createPost = async (req, res) => {
         const count = await Product.countDocuments();
         req.body.position = count + 1;
     }
-    req.body.thumbnail = `/uploads/${req.file.filename}`;
+    if(req.file){
+        req.body.thumbnail = `/uploads/${req.file.filename}`;
+    }
+    
     // console.log(req.body);
     console.log(req.body.thumbnail);
     // Với text fields (như title) → Multer bỏ vào req.body.
-    // Với file fields (như thumbnail) → Multer bỏ vào req.file hoặc req.files.
+    // Với file fields (như thumbnail) → Multer bỏ và o req.file hoặc req.files.
     const product = new Product(req.body); // tạo mới 1 sản phấm ở bên phía mô đồ
     await product.save(); // lưu vào db
     req.flash('success' , `Thêm sản phẩm thành công`);
