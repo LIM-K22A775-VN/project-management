@@ -33,13 +33,18 @@ router.post(
 
     controller.createPost
 );
-
+// Chỉnh sửa
 router.get('/edit/:id', controller.edit);
+
 
 router.patch('/edit/:id', 
     upload.single("thumbnail"), 
     productValidate.creatPost, // điều kiện của các biến 
     controller.editPatch
 );
+// Chỉnh sửa
 
+//Chi tiet
+router.get('/detail/:id', controller.detail);
+//chi tiet
 module.exports = router;

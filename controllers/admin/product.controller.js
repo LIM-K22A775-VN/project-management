@@ -240,3 +240,24 @@ module.exports.editPatch = async (req, res) => {
         res.redirect(`${systemConfig.prefixAdmin}/products`);
     }
 };
+
+
+//[GET] admin/products/edit/:id
+module.exports.detail = async (req, res) => {
+    try {
+        const find = {
+            deleted: false,
+            _id: req.params.id // chính là :id 
+        };
+
+        const product = await Product.findOne(find);
+        console.log(product);
+        res.render("admin/pages/products/detail.pug", {
+            pageTitle: product.title,
+            product: product
+        });
+    } catch (error) {
+        req.flash("error" , "Lỗi do không tồn tại id")
+        res.redirect("/admin/products");
+    }
+}
