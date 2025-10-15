@@ -1,70 +1,71 @@
 
-const express = require('express');
-const methodOverride = require('method-override');
-const bodyParser = require('body-parser');
+  const express = require('express');
+  const methodOverride = require('method-override');
+  const bodyParser = require('body-parser');
 
-const flash = require('express-flash'); 
-require("dotenv").config();
-
-
-// Ket noi database
-const database = require("./config/database");
-database.connect();
-
-const systemConfig = require("./config/system");
-
-const router = require("./routers/clients/index.router");
-const routerAdmin = require("./routers/admin/index.router");
+  const flash = require('express-flash'); 
+  require("dotenv").config();
 
 
+  // Ket noi database
+  const database = require("./config/database");
+  database.connect();
 
-const app = express()
+  const systemConfig = require("./config/system");
 
-const port = process.env.PORT;  
-
-
-// app.set("views","./views");
-app.set("views",`${__dirname}/views`);
-app.set("view engine" , "pug");
+  const router = require("./routers/clients/index.router");
+  const routerAdmin = require("./routers/admin/index.router");
 
 
 
-//flash
-const cookieParser = require('cookie-parser');
-app.use(cookieParser('asdfsqfwee'));
-const session = require('express-session');
+  const app = express()
 
-app.use(session({
-  secret: 'asdfsqfwee', // bí mật dùng để ký session
-  resave: false,
-  saveUninitialized: false,
-  cookie: { maxAge: 60000 } // thời gian sống của cookie (ms)
-}));
+  const port = process.env.PORT;  
 
-app.use(flash());
-//flashs
 
-// App locals Variables
-app.locals.prefixAdmin = systemConfig.prefixAdmin; // chỉ đc dùng trong file pug
+  // app.set("views","./views");
+  app.set("views",`${__dirname}/views`);
+  app.set("view engine" , "pug");
 
-// app.use(express.static("public"));
-app.use(express.static(`${__dirname}/public`));
 
-app.use(methodOverride('_method'));
 
-// app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+  //flash
+  const cookieParser = require('cookie-parser');
+  app.use(cookieParser('asdfsqfwee'));
+  const session = require('express-session');
 
-// Routers
-router(app);
-routerAdmin(app);
+  app.use(session({
+    secret: 'asdfsqfwee', // bí mật dùng để ký session
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 60000 } // thời gian sống của cookie (ms)
+  }));
 
-// app.use(express.static('public'));
+  app.use(flash());
+  //flashs
 
-app.listen(
-    port , ()=>{
-        console.log(`xample app listening on port ${port}`)
-    }
-)
+  // App locals Variables
+  app.locals.prefixAdmin = systemConfig.prefixAdmin; // chỉ đc dùng trong file pug
 
-//1:11
+  // app.use(express.static("public"));
+  app.use(express.static(`${__dirname}/public`));
+
+  app.use(methodOverride('_method'));
+
+  // app.use(express.json());
+  app.use(express.urlencoded({ extended: false }));
+
+  // Routers
+  router(app);
+  routerAdmin(app);
+
+  // app.use(express.static('public'));
+
+  if (process.env.NODE_ENV !== "production") {
+  const port = process.env.PORT || 3000;
+  app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+  });
+}
+
+  //1:11
