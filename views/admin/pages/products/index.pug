@@ -1,6 +1,7 @@
 extends ../../layouts/default.pug
 
 include ../../mixins/filter-status.pug
+include ../../mixins/filter-sort.pug
 include ../../mixins/search.pug
 include ../../mixins/pagination.pug
 include ../../mixins/form-change-multi.pug
@@ -9,11 +10,11 @@ block main
   +alert-success("5000")
   +alert-error("5000")
   h1 Trang danh sách sản phẩm
-  .dropdown.ml-1
-    button.dropdown-btn(type="button" onclick="toggleDropdown(this)") #{name}
+  div(class ="dropdown ml-1" dropdown-status)
+    button.dropdown-btn.hienthiDrop(type="button") #{name}
     .dropdown-content
       each item in filterStatus
-        a(href="#" onclick=`selectOption('${item.status}', event)`) #{item.name}
+        a(a-status value=`${item.status}` ) #{item.name}
   .card.mb-3
     .card-header Bộ lọc và Tìm kiếm
     .card-body
@@ -22,6 +23,16 @@ block main
           +filter-status(filterStatus)
         .col-6 
           +search(keyword)   
+
+  .card.mb-3 
+    .card-header Sắp xếp
+    .card-body
+      .row
+        .col-4 
+          +filter-sort(filterSort)
+
+
+
   .card.mb-3 
     .card-header Danh sách sản phẩm
     .card-body

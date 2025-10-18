@@ -40,6 +40,7 @@ router.get('/edit/:id', controller.edit);
 
 router.patch('/edit/:id',
     upload.single("thumbnail"),
+    uploadCloud.upload,
     productValidate.creatPost, // điều kiện của các biến 
     controller.editPatch
 );
@@ -48,4 +49,7 @@ router.patch('/edit/:id',
 //Chi tiet
 router.get('/detail/:id', controller.detail);
 //chi tiet
+
+
+
 module.exports = router;

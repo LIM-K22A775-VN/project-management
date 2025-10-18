@@ -1,6 +1,7 @@
 const Product = require("../../models/product.model.js")
 // Đây là model trong Mongoose — nó đại diện cho một bảng (collection) trong MongoDB.
 const filterStatusHelper = require("../../helpers/filterStatus.js")
+const filterSortHelper = require("../../helpers/filterSort.js")
 const searchHelper = require("../../helpers/search.js")
 const paginationHelper = require("../../helpers/pagination.js")
 const systemConfig = require("../../config/system.js")
@@ -23,7 +24,10 @@ module.exports.index = async (req, res) => {
     }
     // console.log(filterStatus);
     //End Đoạn bộ lọc
-
+    //Start Đoạn bộ lọc
+    
+    const filterSort = filterSortHelper(req);
+    
     // Start Tìm kiếm
     const objectSearch = searchHelper(req);
     if (req.query.keyword) {
@@ -43,10 +47,20 @@ module.exports.index = async (req, res) => {
     );
     //End Pagination
 
+    // START SORT
+    let sort = {
+        
+    };
+    if(req.query.sortKey && req.query.sortValue){
+        sort[req.query.sortKey] = req.query.sortValue;
+    }
+    else{
+        sort.position = "desc";
+    } 
+    // END SORT
+
     const products = await Product.find(find)
-        .sort({
-            position: "desc"
-        }) // asc : tăng dần , desc : giảm dần
+        .sort(sort) // asc : tăng dần , desc : giảm dần
         .limit(objectPagination.limitItems) // giới hạn 4 sản phẩm
         .skip(objectPagination.skip); // bỏ qua bao nhiêu sản phẩm
 
@@ -54,8 +68,10 @@ module.exports.index = async (req, res) => {
         pageTitle: "Danh sách sản phẩm",
         products: products,
         filterStatus: filterStatus,
+        filterSort : filterSort,
         name: req.query.status == "active" ? "Đang hoạt động" : req.query.status == "inactive" ?
             "Dừng hoạt động" : "Tất cả",
+        nameSort: `${req.query.sortKey}-${req.query.sortValue}`,
         keyword: objectSearch.keyword,
         pagination: objectPagination
     });
@@ -201,7 +217,7 @@ module.exports.edit = async (req, res) => {
             product: product
         });
     } catch (error) {
-        req.flash("error" , "Lỗi do không tồn tại id")
+        req.flash("error", "Lỗi do không tồn tại id")
         res.redirect("/admin/products");
     }
 }
@@ -230,7 +246,9 @@ module.exports.editPatch = async (req, res) => {
 
         // Cập nhật document trong MongoDB
         // await Product.findByIdAndUpdate(id, req.body);
-        await Product.updateOne({_id : id}, req.body);
+        await Product.updateOne({
+            _id: id
+        }, req.body);
 
         req.flash('success', 'Cập nhật sản phẩm thành công');
         res.redirect(`${systemConfig.prefixAdmin}/products`);
@@ -257,7 +275,8 @@ module.exports.detail = async (req, res) => {
             product: product
         });
     } catch (error) {
-        req.flash("error" , "Lỗi do không tồn tại id")
+        req.flash("error", "Lỗi do không tồn tại id")
         res.redirect("/admin/products");
     }
 }
+

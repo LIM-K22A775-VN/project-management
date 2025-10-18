@@ -1,0 +1,18 @@
+mixin filter-sort(filterSort)
+    div(sort)
+        select(
+        class="form-control"
+        name="sort"
+        sort-select
+        )
+         each item in filterSort        
+            option(
+                value=`${item.sortKey}-${item.sortValue}` 
+                selected = `${item.sortKey}-${item.sortValue}` === nameSort
+                ) #{item.name}
+        button(
+        class="btn btn-danger mt-2"
+        sort-clear
+        ) Clear
+
+//- nameSort

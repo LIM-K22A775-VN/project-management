@@ -169,9 +169,9 @@ if (showAlert) {
     const timeEnd = showAlert.getAttribute("data-time");
     const closeAlert = showAlert.querySelector("[close-alert]");
     setTimeout(() => {
-      showAlert.classList.add("alert-hidden");
+        showAlert.classList.add("alert-hidden");
     }, parseInt(timeEnd));
-    closeAlert.addEventListener("click",()=>{
+    closeAlert.addEventListener("click", () => {
         showAlert.classList.add("alert-hidden");
     });
 }
@@ -181,42 +181,76 @@ if (showAlert) {
 
 // Upload IMG  tối ưu img
 const uploadImage = document.querySelector(["[upload-image]"]);
-if(uploadImage){
+if (uploadImage) {
     const uploadImageInput = document.querySelector("[upload-image-input]");
     const uploadImagePreview = document.querySelector("[upload-image-preview]");
     const fakeFile = document.querySelector("[fake-file]");
     const cancelBtn = document.querySelector('[upload-image-cancel]');
-    if(fakeFile){
-        fakeFile.addEventListener("click" ,
-            ()=>{
+    if (fakeFile) {
+        fakeFile.addEventListener("click",
+            () => {
                 uploadImageInput.click();
             }
-         );
+        );
     }
-    uploadImageInput.addEventListener("change" ,(e)=>{
+    uploadImageInput.addEventListener("change", (e) => {
         console.log(e);
         // const file = e.target.files[0].name; // lấy ra tên ảnh
         const file = e.target.files[0]; // file ảnh
-        
-        if(file)
-        {
+
+        if (file) {
             uploadImagePreview.src = URL.createObjectURL(file);
             cancelBtn.style.display = 'inline-block';
         }
-        console.log(file);      
-        
+        console.log(file);
+
     });
 
-         // Khi nhấn nút huỷ
-  cancelBtn.addEventListener('click', () => {
-    // console.log(uploadImageInput.value); //C:\fakepath\WIN_20250711_16_28_40_Pro.jpg
-    uploadImageInput.value = ''; // giá trị rỗng
-    uploadImagePreview.src="";
-    // uploadImagePreview.style.display = 'none'; css có rồi
-    cancelBtn.style.display = 'none';
-  });
+    // Khi nhấn nút huỷ
+    cancelBtn.addEventListener('click', () => {
+        // console.log(uploadImageInput.value); //C:\fakepath\WIN_20250711_16_28_40_Pro.jpg
+        uploadImageInput.value = ''; // giá trị rỗng
+        uploadImagePreview.src = "";
+        // uploadImagePreview.style.display = 'none'; css có rồi
+        cancelBtn.style.display = 'none';
+    });
 }
 
 // Upload IMG 
 //  const imageURL = URL.createObjectURL(file);
 // URL.createObjectURL(file) để tạo một URL tạm thời từ file đó.
+
+
+
+
+
+//SORT
+const sort = document.querySelector("[sort]");
+if (sort) {
+    let url = new URL(window.location.href);
+    const sortSelect = sort.querySelector("[sort-select]");
+    const sortClear = sort.querySelector("[sort-clear]");
+    //Sắp xếp
+    if (sortSelect) {
+        sortSelect.addEventListener("change", (e) => {
+            const value = e.target.value;
+            const [sortKey, sortValue] = value.split("-");
+
+            url.searchParams.set("sortKey", sortKey);
+            url.searchParams.set("sortValue", sortValue);
+
+            window.location.href = url;
+        });
+    }
+    //Xóa sắp xếp
+    if (sortClear) {
+        sortClear.addEventListener("click", () => {
+            url.searchParams.delete("sortKey");
+            url.searchParams.delete("sortValue");
+            window.location.href = url;
+        });
+    }
+}
+
+
+//SORT
