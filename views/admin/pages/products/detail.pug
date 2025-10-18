@@ -28,7 +28,8 @@ block main
                 src=product.thumbnail
                 style="width: 300px"
             )
-
+    if product.description
+        div(class="mb-4") !{product.description}
     if product.status
         div(class="mb-4")   
             span Trạng thái: 
@@ -41,4 +42,8 @@ block main
         div(class="mb-4") Vị trí: 
             b #{product.position}$
 
+    a(
+        href=`${prefixAdmin}/products/edit/${product.id}`
+        class="btn btn-warning "
+    ) Chỉnh sửa
     script(src="admin/js/product")

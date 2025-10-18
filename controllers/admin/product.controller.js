@@ -211,7 +211,7 @@ module.exports.edit = async (req, res) => {
         };
 
         const product = await Product.findOne(find);
-        console.log(product);
+        console.log("v lìn");
         res.render("admin/pages/products/edit.pug", {
             pageTitle: "Thêm mới sản phẩm",
             product: product
@@ -240,9 +240,7 @@ module.exports.editPatch = async (req, res) => {
         }
 
         // Nếu có file ảnh mới thì cập nhật thumbnail
-        if (req.file) {
-            req.body.thumbnail = `/uploads/${req.file.filename}`;
-        }
+        
 
         // Cập nhật document trong MongoDB
         // await Product.findByIdAndUpdate(id, req.body);

@@ -7,6 +7,8 @@ const flash = require('express-flash');
 require("dotenv").config();
 
 
+
+
 // Ket noi database
 const database = require("./config/database");
 database.connect();
@@ -43,6 +45,13 @@ app.use(session({
 
 app.use(flash());
 //flashs
+
+// tinyMce
+const path = require('path');
+app.use('/tinymce', express.static(path.join(__dirname,'node_modules','tinymce')));
+// tinyMce
+
+
 
 // App locals Variables
 app.locals.prefixAdmin = systemConfig.prefixAdmin; // chỉ đc dùng trong file pug

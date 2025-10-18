@@ -238,7 +238,7 @@ if (sort) {
 
             url.searchParams.set("sortKey", sortKey);
             url.searchParams.set("sortValue", sortValue);
-
+            
             window.location.href = url;
         });
     }
