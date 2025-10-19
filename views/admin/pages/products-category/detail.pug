@@ -1,0 +1,36 @@
+//- kế thừa 
+extends ../../layouts/default.pug 
+
+//- nhúng file 
+include ../../mixins/alert.pug
+
+block main
+    +alert-error(5000)
+
+    if product.title
+        h1(class="mb-4") #{product.title}
+
+    if product.thumbnail
+        div(class="mb-4") 
+            img(
+                src=product.thumbnail
+                style="width: 300px"
+            )
+    if product.description
+        div(class="mb-4") !{product.description}
+    if product.status
+        div(class="mb-4")   
+            span Trạng thái: 
+            if product.status == "active"
+                span(class="badge bg-success") Hoạt động
+            else
+                span(class="badge bg-danger") Dừng hoạt động
+
+    if product.position
+        div(class="mb-4") Vị trí: 
+            b #{product.position}$
+
+    a(
+        href=`${prefixAdmin}/products-category/edit/${product.id}`
+        class="btn btn-warning "
+    ) Chỉnh sửa
