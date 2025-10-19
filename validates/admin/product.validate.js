@@ -4,8 +4,8 @@ module.exports.creatPost = (req, res, next) => {
         res.redirect(`/admin/products/create`);
         return;
     }
-    if (req.body.title.length < 8) {
-        req.flash('error', `Vui lòng nhập tiêu đề ít nhất 8 kí tự!`);
+    if (req.body.title.length < 6) {
+        req.flash('error', `Vui lòng nhập tiêu đề ít nhất 6 kí tự!`);
         res.redirect(`/admin/products/create`);
         return;
     }

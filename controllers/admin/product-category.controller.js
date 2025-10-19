@@ -4,6 +4,7 @@ const filterSortHelper = require("../../helpers/filterSort.js")
 const searchHelper = require("../../helpers/search.js")
 const paginationHelper = require("../../helpers/pagination.js")
 const systemConfig = require("../../config/system.js")
+const createTreeHelper = require("../../helpers/createTree.js")
 //[GET] /admin/products-category
 module.exports.index = async (req, res) => {
     let find = {
@@ -52,14 +53,18 @@ module.exports.index = async (req, res) => {
     } 
     // END SORT
 
-    const records = await ProductCategory.find(find)
-        .sort(sort) // asc : tăng dần , desc : giảm dần
-        .limit(objectPagination.limitItems) // giới hạn 4 sản phẩm
-        .skip(objectPagination.skip); // bỏ qua bao nhiêu sản phẩm
+   
 
+    const records = await ProductCategory.find(find)
+        // .sort(sort) // asc : tăng dần , desc : giảm dần
+        // .limit(objectPagination.limitItems) // giới hạn 4 sản phẩm
+        // .skip(objectPagination.skip); // bỏ qua bao nhiêu sản phẩm
+
+    const newrecords = createTreeHelper.createTree(records);
+    
     res.render("admin/pages/products-category/index.pug", {
         pageTitle: "Danh sách sản phẩm",
-        records: records,
+        records: newrecords,
         filterStatus: filterStatus,
         filterSort : filterSort,
         name: req.query.status == "active" ? "Đang hoạt động" : req.query.status == "inactive" ?
@@ -71,8 +76,17 @@ module.exports.index = async (req, res) => {
 } 
 //[GET] /admin/products-category/create
 module.exports.create = async (req, res) => {
+    let find ={
+        deleted : false
+    };
+
+    // lấy ra các danh mục trong db
+    const records = await ProductCategory.find(find);
+    const newrecords = createTreeHelper.createTree(records);
+    // console.log(newrecords);
     res.render("admin/pages/products-category/create.pug", {
         pageTitle: "Tạo danh mục sản phẩm",
+        records :newrecords
     });
 } 
 
@@ -83,7 +97,7 @@ module.exports.creatPost = async (req, res) => {
     } else { 
         const count = await ProductCategory.countDocuments();
         req.body.position = count + 1;
-    }
+    }   
     const record = new ProductCategory(req.body); // record : bản ghi
     await record.save();
     req.flash('success', `Thêm danh mục thành công`);
