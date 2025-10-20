@@ -3,6 +3,10 @@ const slug = require('mongoose-slug-updater');
 mongoose.plugin(slug);
 const productSchema = new mongoose.Schema({
     title: String,   //San pham 1
+    parent_category_id : {
+        type : String,
+        default:""
+    },
     description: String,
     price: Number,
     discountPercentage: Number,

@@ -1,10 +1,12 @@
 const Product = require("../../models/product.model.js")
+const ProductCategory = require("../../models/product-category.model");
 // Đây là model trong Mongoose — nó đại diện cho một bảng (collection) trong MongoDB.
 const filterStatusHelper = require("../../helpers/filterStatus.js")
 const filterSortHelper = require("../../helpers/filterSort.js")
 const searchHelper = require("../../helpers/search.js")
 const paginationHelper = require("../../helpers/pagination.js")
 const systemConfig = require("../../config/system.js")
+const createTreeHelper = require("../../helpers/createTree.js")
 // const productValidate = require("../../validates/admin/product.validate.js")
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
@@ -167,8 +169,13 @@ module.exports.thungrac = (req, res) => {
 
 // [GET] /admin/products/create
 module.exports.create = async (req, res) => {
+
+    const records = await ProductCategory.find({deleted : false});
+    const newrecords = createTreeHelper.createTree(records);
+
     res.render("admin/pages/products/create.pug", {
         pageTitle: "Thêm mới sản phẩm",
+        records : newrecords
     });
 }
 //[POST] /admin/products/create
@@ -193,7 +200,7 @@ module.exports.createPost = async (req, res) => {
     // }
 
     // console.log(req.body);
-    console.log(req.body.thumbnail);
+    // console.log(req.body.thumbnail);
     // Với text fields (như title) → Multer bỏ vào req.body.
     // Với file fields (như thumbnail) → Multer bỏ và o req.file hoặc req.files.
     const product = new Product(req.body); // tạo mới 1 sản phấm ở bên phía mô đồ
@@ -211,7 +218,6 @@ module.exports.edit = async (req, res) => {
         };
 
         const product = await Product.findOne(find);
-        console.log("v lìn");
         res.render("admin/pages/products/edit.pug", {
             pageTitle: "Thêm mới sản phẩm",
             product: product
@@ -267,7 +273,6 @@ module.exports.detail = async (req, res) => {
         };
 
         const product = await Product.findOne(find);
-        console.log(product);
         res.render("admin/pages/products/detail.pug", {
             pageTitle: product.title,
             product: product
