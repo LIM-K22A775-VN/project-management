@@ -3,7 +3,7 @@ extends ../../layouts/default.pug
 
 //- nhúng file 
 include ../../mixins/alert.pug
-
+include ../../mixins/select-tree.pug
 
 block main
     +alert-error(5000)
@@ -25,6 +25,16 @@ block main
             value=product.title
             
           )
+        div(class ="form-group")         
+          label(for="parent_category_id") Danh mục
+          select(
+            name="parent_category_id"
+            id ="parent_category_id"
+            class="form-control"
+            )
+              option(value="") -- Chọn danh mục --
+              if(records)
+                +select-tree(records,product.parent_category_id) 
         div(class ="form-group")
           label(for="desc") Mô tả
           textarea(

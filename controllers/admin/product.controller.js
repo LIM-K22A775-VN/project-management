@@ -218,9 +218,12 @@ module.exports.edit = async (req, res) => {
         };
 
         const product = await Product.findOne(find);
+        const records = await ProductCategory.find({deleted : false});
+        const newrecords = createTreeHelper.createTree(records);
         res.render("admin/pages/products/edit.pug", {
             pageTitle: "Thêm mới sản phẩm",
-            product: product
+            product: product,
+            records: records
         });
     } catch (error) {
         req.flash("error", "Lỗi do không tồn tại id")
