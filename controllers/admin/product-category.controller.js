@@ -200,11 +200,17 @@ module.exports.edit = async (req, res) => {
             deleted: false,
             _id: req.params.id // chính là :id 
         };
-
+        
         const product = await ProductCategory.findOne(find);
+        
+        // lấy ra các danh mục trong db
+        const records = await ProductCategory.find({deleted : false});
+        const newrecords = createTreeHelper.createTree(records);
+
         res.render("admin/pages/products-category/edit.pug", {
             pageTitle: "Chỉnh sửa danh mục",
-            product: product
+            product: product,
+            records : newrecords
         });
     } catch (error) {
         req.flash("error", "Lỗi do không tồn tại id")
@@ -214,10 +220,9 @@ module.exports.edit = async (req, res) => {
 
 
 //[PATCH] /admin/products/edit/:id
-module.exports.editPatch = async (req, res) => {
-    const id = req.params.id;
+module.exports.editPatch = async (req, res) => {  
     try {
-
+        const id = req.params.id;
         if (req.body.position) {
             req.body.position = parseFloat(req.body.position);
         } else {
