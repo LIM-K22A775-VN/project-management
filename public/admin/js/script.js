@@ -6,7 +6,9 @@
    });
  }
 // xử lý status
- const aStatus = dropdown.querySelectorAll("[a-status]");
+ if(dropdown)
+{
+   const aStatus = dropdown.querySelectorAll("[a-status]");
  if (aStatus)
    aStatus.forEach(a => {
      a.addEventListener("click", () => {
@@ -20,6 +22,7 @@
        window.location.href = url.toString();
      });
    });
+}
 // xử lý status
 
 
