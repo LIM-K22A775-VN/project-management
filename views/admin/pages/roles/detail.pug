@@ -1,0 +1,20 @@
+//- kế thừa 
+extends ../../layouts/default.pug 
+
+//- nhúng file 
+include ../../mixins/alert.pug
+
+block main
+    +alert-error(5000)
+
+    if record.title
+        h1(class="mb-4") #{record.title}
+
+    if record.description
+        div(class="mb-4") !{record.description}
+        
+    a(
+        href=`${prefixAdmin}/roles/edit/${record.id}`
+        class="btn btn-warning "
+    ) Chỉnh sửa
+    script(src="admin/js/roles")

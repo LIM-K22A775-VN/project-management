@@ -88,3 +88,32 @@ module.exports.permissionsPatch = async (req, res) => {
     }
 
 }
+
+
+
+
+
+module.exports.detail = async (req, res) => {
+    let find = {
+        _id: req.params.id,
+        deleted: false
+    }
+    const record = await Role.findOne(find);
+    res.render("admin/pages/roles/detail", {
+        pageTitle: "Chi tiết nhóm quyền",
+        record: record
+    });
+}
+module.exports.delete = async (req, res) => {
+    const id = req.params.id;
+
+    await Role.updateOne({
+        _id: id
+    }, {
+        deleted: true,
+        deletedAt: new Date()
+    });
+    req.flash('success', `Xóa quyền thành công`);
+    res.redirect(req.get("Referer" || "/admin/roles"));
+}
+
