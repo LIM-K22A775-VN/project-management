@@ -7,6 +7,7 @@ module.exports.login = (req, res) => {
         pageTitle: "Trang đăng nhập"
     });
 }
+
 //[POST]  /admin/auth/login   
 module.exports.loginPost = async (req, res) => {
     const email = req.body.email;
@@ -34,4 +35,12 @@ module.exports.loginPost = async (req, res) => {
     res.redirect(`${systemConfig.prefixAdmin}/dashboard`);
 
 
+}
+
+
+//[GET]  /admin/auth/logout   
+module.exports.logout = (req, res) => {
+    // Xóa token trong cookie
+    res.clearCookie("token");
+    res.redirect(`${systemConfig.prefixAdmin}/auth/login`);
 }
