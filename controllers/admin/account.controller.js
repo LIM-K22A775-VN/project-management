@@ -83,7 +83,7 @@ module.exports.editPatch = async (req, res) => {
         });
         if (emailExits) { // && (req.body.emailcu != req.body.email) 
             req.flash('error', `Email ${req.body.email} đã tồn tại!`);
-            return res.redirect(`${systemConfig.prefixAdmin}/accounts/edit/${req.params.id}`);
+            return res.redirect(`${systemConfig.prefixAdmin}/accounts/edit/${req.params.id}`);  
         } else {
             if (req.body.password) {
                 req.body.password = md5(req.body.password);
