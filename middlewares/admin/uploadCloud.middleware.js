@@ -7,7 +7,7 @@ const streamifier = require('streamifier')
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
     api_key: process.env.API_KEY,
-    api_secret: process.env.API_SECRET// Click 'View API Keys' above to copy your API secret
+    api_secret: process.env.API_SECRET // Click 'View API Keys' above to copy your API secret
 });
 // cloudinary
 
@@ -34,8 +34,10 @@ module.exports.upload = (req, res, next) => {
             // console.log(result.secure_url);
             // req.file.fieldname lấy ra name của type = file vd : thumbnail
             // req.body.thumbnail
-
-            req.body.thumbnail = result.secure_url;
+            // nếu là thumbnail thì gửi thumbnail
+                req.body.thumbnail = result.secure_url;
+             // nếu là avatar thì gửi thumbnail
+                req.body.avatar = result.secure_url;
             next();
         }
         upload(req);

@@ -12,7 +12,7 @@ const accountSchema = new mongoose.Schema({
     avatar :String,
     role_id : String , // lưu id của quyền vd: id quyền quản trị viên
     status :String,
-    delete: {
+    deleted: {
         type: Boolean,
         default: false
     },
