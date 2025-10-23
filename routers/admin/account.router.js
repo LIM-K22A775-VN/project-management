@@ -14,9 +14,17 @@ router.get('/', controller.index);
 router.get('/create', controller.create);
 router.post('/create',
     upload.single("avatar"),
-
     uploadCloud.upload,
     accountValidate.creatPost, // điều kiện của các biến 
     controller.createPost);
+
+router.get('/edit/:id',
+    controller.edit);
+router.patch('/edit/:id',
+    upload.single("avatar"),
+    uploadCloud.upload,
+    accountValidate.editPatch,
+    controller.editPatch);
+
 
 module.exports = router;

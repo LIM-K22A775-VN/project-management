@@ -5,6 +5,7 @@ block main
   +alert-success("5000")
   +alert-error("5000")  
   .card.mb-3
+
     .card-header Danh sách
     .card-body
       .row
@@ -55,17 +56,17 @@ block main
                   ) Dừng Hoạt động
             td 
               a(
-              href=`${prefixAdmin}/products/detail/${item.id}`
+              href=`${prefixAdmin}/accounts/detail/${item.id}`
               class="btn btn-secondary btn-sm"
               ) Chi tiết
               |  
               a(
-              href=`${prefixAdmin}/products/edit/${item.id}`
+              href=`${prefixAdmin}/accounts/edit/${item.id}`
               class="btn btn-warning btn-sm"
               ) Sửa
               |  
               button(
                 class="btn btn-danger btn-sm ml-1"
-                button-delete
+                button-delete-role
                 data-id = item.id
               ) Xóa
