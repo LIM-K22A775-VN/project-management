@@ -1,4 +1,3 @@
-const Account = require("../../models/account.model");
 
 module.exports.creatPost = async (req, res, next) => {
     if (!req.body.fullName) {

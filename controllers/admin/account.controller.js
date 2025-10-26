@@ -26,7 +26,7 @@ module.exports.index = async (req, res) => {
     });
 
 }
-//[GET] /admin/aaccount/create
+//[GET] /admin/account/create
 module.exports.create = async (req, res) => {
     const roles = await Role.find({
         deleted: false
