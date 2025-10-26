@@ -102,3 +102,26 @@ module.exports.editPatch = async (req, res) => {
         res.redirect(`${systemConfig.prefixAdmin}/accounts/edit/${req.params.id}`);
     }
 }
+
+module.exports.detail = async (req, res) => {
+    try {
+        const data = await Account.findOne({
+            _id: req.params.id,
+            deleted: false
+        }).select("-password");
+        const roles = await Role.find({
+            _id : data.role_id,
+            deleted: false
+        })
+        console.log(data);
+        console.log(roles);
+        res.render(`admin/pages/accounts/detail`, {
+            pageTitle: "Chi tiết tài khoản",
+            data: data,
+            roles: roles
+        });
+    } catch (error) {
+        req.flash('error', 'id không được gửi lên');
+        res.redirect(`${systemConfig.prefixAdmin}/accounts`);
+    }
+}

@@ -1,0 +1,27 @@
+
+extends ../../layouts/default.pug 
+include ../../mixins/alert.pug
+
+block main
+  .container
+    h1 Thông tin người dùng
+
+    .user-info
+      img(src=data.avatar, alt="Avatar", width="150")
+      p Họ và tên: #{data.fullName}
+      p Email: #{data.email}
+      p Số điện thoại: #{data.phone}
+      p Trạng thái: #{data.status}
+      p Ngày tạo: #{data.createdAt.toLocaleString ? data.createdAt.toLocaleString() : data.createdAt}
+      p Cập nhật lần cuối: #{data.updatedAt.toLocaleString ? data.updatedAt.toLocaleString() : data.updatedAt}
+
+    hr
+    h2 Vai trò
+    p Tên vai trò: #{roles.title}
+    
+    div(class="mb-4") #{roles.description}
+
+    h3 Quyền hạn
+    ul
+      each perm in role.permissions
+        li= perm

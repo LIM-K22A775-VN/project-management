@@ -5,45 +5,48 @@ extends ../../layouts/default.pug
 include ../../mixins/alert.pug
 
 block main
-    +alert-error(5000)
+    if (role.permissions.includes("products_view"))
+        +alert-error(5000)
 
-    if product.title
-        h1(class="mb-4") #{product.title}
+        if product.title
+            h1(class="mb-4") #{product.title}
 
-    if product.price
-        h1(class="mb-4") Giá: 
-            b #{product.price}$
+        if product.price
+            h1(class="mb-4") Giá: 
+                b #{product.price}$
 
-    if product.discountPercentage
-        h1(class="mb-4") Giảm giá: 
-            b #{product.discountPercentage}$
+        if product.discountPercentage
+            h1(class="mb-4") Giảm giá: 
+                b #{product.discountPercentage}$
 
-    if product.stock
-        h1(class="mb-4") Còn lại: 
-            b #{product.stock}$
+        if product.stock
+            h1(class="mb-4") Còn lại: 
+                b #{product.stock}$
 
-    if product.thumbnail
-        div(class="mb-4") 
-            img(
-                src=product.thumbnail
-                style="width: 300px"
-            )
-    if product.description
-        div(class="mb-4") !{product.description}
-    if product.status
-        div(class="mb-4")   
-            span Trạng thái: 
-            if product.status == "active"
-                span(class="badge bg-success") Hoạt động
-            else
-                span(class="badge bg-danger") Dừng hoạt động
+        if product.thumbnail
+            div(class="mb-4") 
+                img(
+                    src=product.thumbnail
+                    style="width: 300px"
+                )
+        if product.description
+            div(class="mb-4") !{product.description}
+        if product.status
+            div(class="mb-4")   
+                span Trạng thái: 
+                if product.status == "active"
+                    span(class="badge bg-success") Hoạt động
+                else
+                    span(class="badge bg-danger") Dừng hoạt động
 
-    if product.position
-        div(class="mb-4") Vị trí: 
-            b #{product.position}$
+        if product.position
+            div(class="mb-4") Vị trí: 
+                b #{product.position}$
 
-    a(
-        href=`${prefixAdmin}/products/edit/${product.id}`
-        class="btn btn-warning "
-    ) Chỉnh sửa
-    script(src="admin/js/product")
+        a(
+            href=`${prefixAdmin}/products/edit/${product.id}`
+            class="btn btn-warning "
+        ) Chỉnh sửa
+        script(src="admin/js/product")
+    else 
+      h1 Không có quyền truy cập
