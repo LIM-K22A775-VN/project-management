@@ -56,7 +56,7 @@ app.use('/tinymce', express.static(path.join(__dirname,'node_modules','tinymce')
 
 // App locals Variables
 app.locals.prefixAdmin = systemConfig.prefixAdmin; // chỉ đc dùng trong file pug
-app.locals.moment = moment; // chỉ đc dùng trong file pug
+app.locals.moment = moment; 
 
 // app.use(express.static("public"));
 app.use(express.static(`${__dirname}/public`));

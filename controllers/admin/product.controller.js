@@ -28,9 +28,9 @@ module.exports.index = async (req, res) => {
     // console.log(filterStatus);
     //End Đoạn bộ lọc
     //Start Đoạn bộ lọc
-    
+
     const filterSort = filterSortHelper(req);
-    
+
     // Start Tìm kiếm
     const objectSearch = searchHelper(req);
     if (req.query.keyword) {
@@ -52,14 +52,13 @@ module.exports.index = async (req, res) => {
 
     // START SORT
     let sort = {
-        
+
     };
-    if(req.query.sortKey && req.query.sortValue){
+    if (req.query.sortKey && req.query.sortValue) {
         sort[req.query.sortKey] = req.query.sortValue;
-    }
-    else{
+    } else {
         sort.position = "desc";
-    } 
+    }
     // END SORT
     const products = await Product.find(find)
         .sort(sort) // asc : tăng dần , desc : giảm dần
@@ -68,17 +67,17 @@ module.exports.index = async (req, res) => {
 
     for (const product of products) {
         const user = await Account.findOne({
-            _id :product.createdBy.account_id
+            _id: product.createdBy.account_id
         });
-        if(user){
-            product.accountFullName = user.fullName; 
+        if (user) {
+            product.accountFullName = user.fullName;
         }
     }
     res.render("admin/pages/products/index.pug", {
         pageTitle: "Danh sách sản phẩm",
         products: products,
         filterStatus: filterStatus,
-        filterSort : filterSort,
+        filterSort: filterSort,
         name: req.query.status == "active" ? "Đang hoạt động" : req.query.status == "inactive" ?
             "Dừng hoạt động" : "Tất cả",
         nameSort: `${req.query.sortKey}-${req.query.sortValue}`,
@@ -134,7 +133,10 @@ module.exports.changeMulti = async (req, res) => {
                 }
             }, {
                 deleted: true,
-                deletedAt: new Date()
+                deletedBy: {
+                    account_id: res.locals.user.id,
+                    deletedAt: new Date()
+                }
             });
             req.flash('success', `Xóa ${ids.length} sản phẩm thành công`);
             break;
@@ -146,9 +148,9 @@ module.exports.changeMulti = async (req, res) => {
                     _id: id
                 }, {
                     position: position
-                });              
+                });
             }
-             req.flash('success', `Thay đổi vị trí ${ids.length} sản phẩm thành công`);
+            req.flash('success', `Thay đổi vị trí ${ids.length} sản phẩm thành công`);
             break;
         default:
             break;
@@ -160,12 +162,16 @@ module.exports.changeMulti = async (req, res) => {
 module.exports.deleteItem = async (req, res) => {
     const id = req.params.id;
 
+
     // await Product.deleteOne({_id : id}); //trong db mất luôn
     await Product.updateOne({
         _id: id
     }, {
         deleted: true, //update truong delete : false / true
-        deletedAt: new Date()
+        deletedBy: {
+            account_id: res.locals.user.id,
+            deletedAt: new Date()
+        }
     });
     req.flash('success', `Xóa sản phẩm thành công`);
     res.redirect(req.get("Referer" || "/admin/products"));
@@ -178,12 +184,14 @@ module.exports.thungrac = (req, res) => {
 // [GET] /admin/products/create
 module.exports.create = async (req, res) => {
 
-    const records = await ProductCategory.find({deleted : false});
+    const records = await ProductCategory.find({
+        deleted: false
+    });
     const newrecords = createTreeHelper.createTree(records);
 
     res.render("admin/pages/products/create.pug", {
         pageTitle: "Thêm mới sản phẩm",
-        records : newrecords
+        records: newrecords
     });
 }
 //[POST] /admin/products/create
@@ -205,7 +213,7 @@ module.exports.createPost = async (req, res) => {
     }
 
     req.body.createdBy = {
-        account_id : res.locals.user.id
+        account_id: res.locals.user.id
     }
     // if (req.file) {
     //     req.body.thumbnail = `/uploads/${req.file.filename}`;
@@ -230,12 +238,14 @@ module.exports.edit = async (req, res) => {
         };
 
         const product = await Product.findOne(find);
-        const records = await ProductCategory.find({deleted : false});
+        const records = await ProductCategory.find({
+            deleted: false
+        });
         const newrecords = createTreeHelper.createTree(records);
         res.render("admin/pages/products/edit.pug", {
-            pageTitle: "Thêm mới sản phẩm",
+            pageTitle: "Chỉnh sửa sản phẩm",
             product: product,
-            records: records
+            records: newrecords
         });
     } catch (error) {
         req.flash("error", "Lỗi do không tồn tại id")
@@ -261,7 +271,7 @@ module.exports.editPatch = async (req, res) => {
         }
 
         // Nếu có file ảnh mới thì cập nhật thumbnail
-        
+
 
         // Cập nhật document trong MongoDB
         // await Product.findByIdAndUpdate(id, req.body);
@@ -297,4 +307,3 @@ module.exports.detail = async (req, res) => {
         res.redirect("/admin/products");
     }
 }
-
