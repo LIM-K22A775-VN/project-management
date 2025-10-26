@@ -4,6 +4,7 @@ const methodOverride = require('method-override');
 const bodyParser = require('body-parser');
 
 const flash = require('express-flash'); 
+const moment = require('moment');
 require("dotenv").config();
 
 
@@ -55,6 +56,7 @@ app.use('/tinymce', express.static(path.join(__dirname,'node_modules','tinymce')
 
 // App locals Variables
 app.locals.prefixAdmin = systemConfig.prefixAdmin; // chỉ đc dùng trong file pug
+app.locals.moment = moment; // chỉ đc dùng trong file pug
 
 // app.use(express.static("public"));
 app.use(express.static(`${__dirname}/public`));

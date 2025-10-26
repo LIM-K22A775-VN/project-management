@@ -39,9 +39,17 @@ module.exports.create = async (req, res) => {
 //[POST] /admin/aaccount/create
 module.exports.createPost = async (req, res) => {
     try {
-        if (req.body.email) {
+
+        const emailExits = await Account.findOne({
+            _id: {
+                $ne: req.params.id
+            },
+            email: req.body.email,
+            deleted: false
+        });
+        if (emailExits) {
             req.flash('error', `Email ${req.body.email} đã tồn tại!`);
-            res.redirect(`/admin/accounts/create`);
+            return res.redirect(`/admin/accounts/create`);
         }
         req.body.password = md5(req.body.password); // mã hóa
         const record = new Account(req.body);
@@ -77,13 +85,15 @@ module.exports.edit = async (req, res) => {
 module.exports.editPatch = async (req, res) => {
     try {
         const emailExits = await Account.findOne({
-            _id :  { $ne: req.params.id },
+            _id: {
+                $ne: req.params.id
+            },
             email: req.body.email,
             deleted: false
         });
         if (emailExits) { // && (req.body.emailcu != req.body.email) 
             req.flash('error', `Email ${req.body.email} đã tồn tại!`);
-            return res.redirect(`${systemConfig.prefixAdmin}/accounts/edit/${req.params.id}`);  
+            return res.redirect(`${systemConfig.prefixAdmin}/accounts/edit/${req.params.id}`);
         } else {
             if (req.body.password) {
                 req.body.password = md5(req.body.password);
@@ -110,7 +120,7 @@ module.exports.detail = async (req, res) => {
             deleted: false
         }).select("-password");
         const roles = await Role.find({
-            _id : data.role_id,
+            _id: data.role_id,
             deleted: false
         })
         console.log(data);

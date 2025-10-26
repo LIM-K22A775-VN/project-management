@@ -1,5 +1,6 @@
 const Product = require("../../models/product.model.js")
 const ProductCategory = require("../../models/product-category.model");
+const Account = require("../../models/account.model");
 // Đây là model trong Mongoose — nó đại diện cho một bảng (collection) trong MongoDB.
 const filterStatusHelper = require("../../helpers/filterStatus.js")
 const filterSortHelper = require("../../helpers/filterSort.js")
@@ -60,12 +61,19 @@ module.exports.index = async (req, res) => {
         sort.position = "desc";
     } 
     // END SORT
-
     const products = await Product.find(find)
         .sort(sort) // asc : tăng dần , desc : giảm dần
         .limit(objectPagination.limitItems) // giới hạn 4 sản phẩm
         .skip(objectPagination.skip); // bỏ qua bao nhiêu sản phẩm
 
+    for (const product of products) {
+        const user = await Account.findOne({
+            _id :product.createdBy.account_id
+        });
+        if(user){
+            product.accountFullName = user.fullName; 
+        }
+    }
     res.render("admin/pages/products/index.pug", {
         pageTitle: "Danh sách sản phẩm",
         products: products,
@@ -194,6 +202,10 @@ module.exports.createPost = async (req, res) => {
     } else {
         const count = await Product.countDocuments();
         req.body.position = count + 1;
+    }
+
+    req.body.createdBy = {
+        account_id : res.locals.user.id
     }
     // if (req.file) {
     //     req.body.thumbnail = `/uploads/${req.file.filename}`;
