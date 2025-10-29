@@ -19,9 +19,9 @@ module.exports.index = async (req, res) => {
     // console.log(filterStatus);
     //End Đoạn bộ lọc
     //Start Đoạn bộ lọc
-    
+
     const filterSort = filterSortHelper(req);
-    
+
     // Start Tìm kiếm
     const objectSearch = searchHelper(req);
     if (req.query.keyword) {
@@ -43,41 +43,40 @@ module.exports.index = async (req, res) => {
 
     // START SORT
     let sort = {
-        
+
     };
-    if(req.query.sortKey && req.query.sortValue){
+    if (req.query.sortKey && req.query.sortValue) {
         sort[req.query.sortKey] = req.query.sortValue;
-    }
-    else{
+    } else {
         sort.position = "desc";
-    } 
+    }
     // END SORT
 
-   
+
 
     const records = await ProductCategory.find(find)
-        // .sort(sort) // asc : tăng dần , desc : giảm dần
-        // .limit(objectPagination.limitItems) // giới hạn 4 sản phẩm
-        // .skip(objectPagination.skip); // bỏ qua bao nhiêu sản phẩm
+    // .sort(sort) // asc : tăng dần , desc : giảm dần
+    // .limit(objectPagination.limitItems) // giới hạn 4 sản phẩm
+    // .skip(objectPagination.skip); // bỏ qua bao nhiêu sản phẩm
 
     const newrecords = createTreeHelper.createTree(records);
-    
+
     res.render("admin/pages/products-category/index.pug", {
         pageTitle: "Danh sách sản phẩm",
         records: newrecords,
         filterStatus: filterStatus,
-        filterSort : filterSort,
+        filterSort: filterSort,
         name: req.query.status == "active" ? "Đang hoạt động" : req.query.status == "inactive" ?
             "Dừng hoạt động" : "Tất cả",
         nameSort: `${req.query.sortKey}-${req.query.sortValue}`,
         keyword: objectSearch.keyword,
         pagination: objectPagination
     });
-} 
+}
 //[GET] /admin/products-category/create
 module.exports.create = async (req, res) => {
-    let find ={
-        deleted : false
+    let find = {
+        deleted: false
     };
 
     // lấy ra các danh mục trong db
@@ -86,106 +85,119 @@ module.exports.create = async (req, res) => {
     // console.log(newrecords);
     res.render("admin/pages/products-category/create.pug", {
         pageTitle: "Tạo danh mục sản phẩm",
-        records :newrecords
+        records: newrecords
     });
-} 
+}
 
 // [POST] /admin/products-category/create
 module.exports.creatPost = async (req, res) => {
-    if (req.body.position) {
-        req.body.position = parseFloat(req.body.position);
-    } else { 
-        const count = await ProductCategory.countDocuments();
-        req.body.position = count + 1;
-    }   
-    const record = new ProductCategory(req.body); // record : bản ghi
-    await record.save();
-    req.flash('success', `Thêm danh mục thành công`);
-    res.redirect(`${systemConfig.prefixAdmin}/products-category`);
-  
-}   
+    const permissions = res.locals.role.permissions; // bảo mật 
+    if (permissions.includes("products-category_create")) {
+        if (req.body.position) {
+            req.body.position = parseFloat(req.body.position);
+        } else {
+            const count = await ProductCategory.countDocuments();
+            req.body.position = count + 1;
+        }
+        const record = new ProductCategory(req.body); // record : bản ghi
+        await record.save();
+        req.flash('success', `Thêm danh mục thành công`);
+        res.redirect(`${systemConfig.prefixAdmin}/products-category`);
+    } else {
+        return;
+    }
+}
 
 
 // [PATCH] /admin/products/changestatus/:status/:id
 //thay đổi trạng thái hoạt động dừng hoạt động cho sản phẩm
 module.exports.changeStatus = async (req, res) => {
+    const permissions = res.locals.role.permissions; // bảo mật 
+    if (permissions.includes("products-category_edit")) {
+        const status = req.params.status; // ;lấy thông tin trên url
+        const id = req.params.id;
+        //update database
+        await ProductCategory.updateOne({
+            _id: id
+        }, {
+            status: status
+        });
+        // in thông báo thành công
+        req.flash('success', 'Cập nhật trạng thái thành công');
+        // console.log(m);
+        res.redirect(req.get("Referer" || "/admin/products-category"),
 
-    const status = req.params.status; // ;lấy thông tin trên url
-    const id = req.params.id;
-    //update database
-    await ProductCategory.updateOne({
-        _id: id
-    }, {
-        status: status
-    });
-    // in thông báo thành công
-    req.flash('success', 'Cập nhật trạng thái thành công');
-    // console.log(m);
-    res.redirect(req.get("Referer" || "/admin/products-category"),
-
-    );
+        );
+    }
 
 }
 // thay doi trang thai nhieu san pham
 // PATCH /admin/products/change-multi 
 module.exports.changeMulti = async (req, res) => {
-    console.log(req.body); // đây là mình gửi từ public lên
-    const type = req.body.type; // kiểu
-    const ids = req.body.ids.split(", ");
-    switch (type) {
-        case "active":
-        case "inactive":
-            await ProductCategory.updateMany({
-                _id: {
-                    $in: ids
-                }
-            }, {
-                status: type
-            });
-            req.flash('success', `Cập nhật trạng thái ${ids.length} sản phẩm thành công`);
-            break;
-        case "delete-all":
-            await ProductCategory.updateMany({
-                _id: {
-                    $in: ids
-                }
-            }, {
-                deleted: true,
-                deletedAt: new Date()
-            });
-            req.flash('success', `Xóa ${ids.length} sản phẩm thành công`);
-            break;
-        case "change-position":
-            for (const item of ids) {
-                let [id, position] = item.split("-");
-                position = parseInt(position);
-                await ProductCategory.updateOne({
-                    _id: id
+    const permissions = res.locals.role.permissions; // bảo mật 
+    if (permissions.includes("products-category_edit")) {
+        const type = req.body.type; // kiểu
+        const ids = req.body.ids.split(", ");
+        switch (type) {
+            case "active":
+            case "inactive":
+                await ProductCategory.updateMany({
+                    _id: {
+                        $in: ids
+                    }
                 }, {
-                    position: position
-                });              
-            }
-            req.flash('success', `Thay đổi vị trí ${ids.length} sản phẩm thành công`);
-            break;
-        default:
-            break;
+                    status: type
+                });
+                req.flash('success', `Cập nhật trạng thái ${ids.length} sản phẩm thành công`);
+                break;
+            case "delete-all":
+                await ProductCategory.updateMany({
+                    _id: {
+                        $in: ids
+                    }
+                }, {
+                    deleted: true,
+                    deletedAt: new Date()
+                });
+                req.flash('success', `Xóa ${ids.length} sản phẩm thành công`);
+                break;
+            case "change-position":
+                for (const item of ids) {
+                    let [id, position] = item.split("-");
+                    position = parseInt(position);
+                    await ProductCategory.updateOne({
+                        _id: id
+                    }, {
+                        position: position
+                    });
+                }
+                req.flash('success', `Thay đổi vị trí ${ids.length} sản phẩm thành công`);
+                break;
+            default:
+                break;
+        }
+        res.redirect(req.get("Referer" || "/admin/products-category"));
     }
-    res.redirect(req.get("Referer" || "/admin/products-category"));
+
 }
 
 // [DELETE] /admin/products/delete/:id
 module.exports.deleteItem = async (req, res) => {
-    const id = req.params.id;
+    const permissions = res.locals.role.permissions; // bảo mật 
+    if (permissions.includes("products-category_delete")) {
+        const id = req.params.id;
 
-    // await ProductCategory.deleteOne({_id : id}); //trong db mất luôn
-    await ProductCategory.updateOne({
-        _id: id
-    }, {
-        deleted: true, //update truong delete : false / true
-        deletedAt: new Date()
-    });
-    req.flash('success', `Xóa sản phẩm thành công`);
-    res.redirect(req.get("Referer" || "/admin/products-category"));
+        // await ProductCategory.deleteOne({_id : id}); //trong db mất luôn
+        await ProductCategory.updateOne({
+            _id: id
+        }, {
+            deleted: true, //update truong delete : false / true
+            deletedAt: new Date()
+        });
+        req.flash('success', `Xóa sản phẩm thành công`);
+        res.redirect(req.get("Referer" || "/admin/products-category"));
+    }
+
 
 }
 
@@ -200,17 +212,19 @@ module.exports.edit = async (req, res) => {
             deleted: false,
             _id: req.params.id // chính là :id 
         };
-        
+
         const product = await ProductCategory.findOne(find);
-        
+
         // lấy ra các danh mục trong db
-        const records = await ProductCategory.find({deleted : false});
+        const records = await ProductCategory.find({
+            deleted: false
+        });
         const newrecords = createTreeHelper.createTree(records);
 
         res.render("admin/pages/products-category/edit.pug", {
             pageTitle: "Chỉnh sửa danh mục",
             product: product,
-            records : newrecords
+            records: newrecords
         });
     } catch (error) {
         req.flash("error", "Lỗi do không tồn tại id")
@@ -220,7 +234,7 @@ module.exports.edit = async (req, res) => {
 
 
 //[PATCH] /admin/products/edit/:id
-module.exports.editPatch = async (req, res) => {  
+module.exports.editPatch = async (req, res) => {
     try {
         const id = req.params.id;
         if (req.body.position) {
@@ -262,4 +276,3 @@ module.exports.detail = async (req, res) => {
         res.redirect("/admin/products-category");
     }
 }
-
