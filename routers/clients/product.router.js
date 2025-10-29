@@ -8,6 +8,9 @@ router.get('/create',controller.create);
 router.get('/edit',controller.edit);
 
 
-router.get('/:slug',controller.detail);
+// router.get('/:slug',controller.detail);
+
+
+router.get('/:slugCategory',controller.category);
 
 module.exports = router;
