@@ -3,8 +3,15 @@ include ../../mixins/box-head.pug
 include ../../mixins/product-layout.pug
 //- nhung box-head vao 
 block main
-    .container.my-3
-        .row
-            .col-12
-                +box-head("Danh sach san pham Nổi Bật")
-        +product-grid(productsFeatured)
+    .section-products-featured.my-5
+        .container 
+            .row
+                .col-12
+                    +box-head("Sản phẩm Nổi Bật")
+            +product-grid(productsFeatured)
+    .section-products-new.my-5
+        .container 
+            .row
+                .col-12
+                    +box-head("Sản phẩm mới")
+            +product-grid(productsNew)
