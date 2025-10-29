@@ -1,5 +1,5 @@
 const Product = require("../../models/product.model.js");
-
+const productHeplers = require("../../helpers/product");
 // [GET]  /products 
 module.exports.index = async (req, res) => {
     const products = await Product.find({
@@ -9,10 +9,7 @@ module.exports.index = async (req, res) => {
         position: "desc"
     }) // asc : tăng dần , desc : giảm dần;
 
-    const newProduct = products.map((item) => {
-        item.priceNew = (item.price * (1 - item.discountPercentage / 100)).toFixed(2);
-        return item;
-    });
+    const newProduct = productHeplers.priceNewProducts(products);
 
     res.render("client/pages/products/index.pug", {
         pageTitle: "Trang danh sach san pham",
