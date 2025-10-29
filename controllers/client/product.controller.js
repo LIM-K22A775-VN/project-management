@@ -18,20 +18,32 @@ module.exports.index = async (req, res) => {
         products: newProduct
     });
 } // tem ham la index
-//[GET] /product/:slug
+//[GET] /product/:slugProduct   
 module.exports.detail = async (req, res) => {
     try {
         const find = {
             deleted: false,
-            slug: req.params.slug,
+            slug: req.params.slugProduct,
             status: "active"
         }
         const product = await Product.findOne(find);
+
+        if(product.parent_category_id){
+            const category = await ProductCategory.findOne({
+                _id : product.parent_category_id,
+                status : "active",
+                deleted : false
+            });
+            product.category = category;
+        }
+
+        product.priceNew = productHeplers.priceNewProduct(product); // lấy ra giá mới
+
         res.render("client/pages/products/detail.pug", {
             pageTitle: "Trang chi tiết sản phẩm",
             product: product
             // products: newProduct
-        });
+        }); 
     } catch (error) {
         res.redirect(`/products`);
     }

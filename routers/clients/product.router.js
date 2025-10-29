@@ -8,7 +8,7 @@ router.get('/create',controller.create);
 router.get('/edit',controller.edit);
 
 
-// router.get('/:slug',controller.detail);
+router.get('/detail/:slugProduct',controller.detail);
 
 
 router.get('/:slugCategory',controller.category);
