@@ -9,5 +9,7 @@ router.get("/" , controller.index);
 
 router.post('/add/:productId', controller.addPost );
 
+router.get('/delete/:productId', controller.deleteGet );
+
 
 module.exports = router;
