@@ -2,36 +2,34 @@ const Cart = require("../../models/cart.model");
 const Product = require("../../models/product.model");
 const productsHelper = require("../../helpers/product");
 //[GET]  /cart
-module.exports.index = async (req,res)=>{
+module.exports.index = async (req, res) => {
 
     const cartId = req.cookies.cartId;
     const cart = await Cart.findOne({
-        _id : cartId
+        _id: cartId
     });
 
-    if(cart.products.length > 0 ){
-        for(const item of cart.products){
-            const productId = item.product_id;  
+    if (cart.products.length > 0) {
+        for (const item of cart.products) {
+            const productId = item.product_id;
             const productInfo = await Product.findOne({
-                _id : productId,
-                deleted : false
+                _id: productId,
+                deleted: false
             }).select("title thumbnail slug price discountPercentage");
 
-            productInfo.priceNew  =  productsHelper.priceNewProduct(productInfo);
+            productInfo.priceNew = productsHelper.priceNewProduct(productInfo);
 
             item.productInfo = productInfo;
 
-            item.totalPrice =  productInfo.priceNew * item.quantity;
+            item.totalPrice = productInfo.priceNew * item.quantity;
         }
     }
-    cart.totalPrice = cart.products.reduce( (sum,item) => sum  + item.totalPrice , 0);
+    cart.totalPrice = cart.products.reduce((sum, item) => sum + item.totalPrice, 0);
     console.log(cart);
-    res.render("client/pages/cart/index",
-        {
-            pageTitle: "Giỏ hàng",
-            cartDetail : cart    
-        }
-    );
+    res.render("client/pages/cart/index", {
+        pageTitle: "Giỏ hàng",
+        cartDetail: cart
+    });
 }
 
 //[POST] /cart/:productId
@@ -47,21 +45,18 @@ module.exports.addPost = async (req, res) => {
 
     const existProductInCart = cart.products.find(item => item.product_id == productId); // hàm find js
     if (existProductInCart) {
-        
+
         const quantityNew = quantity + existProductInCart.quantity;
         console.log(quantityNew);
-        await Cart.updateOne(
-            {
-                _id : cartId,
-                "products.product_id" :  productId
+        await Cart.updateOne({
+            _id: cartId,
+            "products.product_id": productId
 
-            },
-            {
-                $set: {
-                    "products.$.quantity" : quantityNew
-                }
+        }, {
+            $set: {
+                "products.$.quantity": quantityNew
             }
-        )
+        })
 
     } else {
         const objectCart = {
@@ -86,20 +81,36 @@ module.exports.addPost = async (req, res) => {
 
 
 //[GET] /cart/delete/:productId
-module.exports.deleteGet = async (req,res)=>{
+module.exports.deleteGet = async (req, res) => {
 
-   const cartId = req.cookies.cartId;
-        const productId = req.params.productId;
-        console.log(cartId);
-        console.log(productId);
-        await Cart.updateOne({
-            _id: cartId
-        }, {
-            $pull: {
-                products: { product_id : productId}
-            } // pull để xóa
-        })
-    req.flash("success" ,"Xóa sản phẩm khỏi giỏ hàng");
+    const cartId = req.cookies.cartId;
+    const productId = req.params.productId;
+    await Cart.updateOne({
+        _id: cartId
+    }, {
+        $pull: {
+            products: {
+                product_id: productId
+            }
+        } // pull để xóa
+    })
+    req.flash("success", "Xóa sản phẩm khỏi giỏ hàng");
     res.redirect(req.get("Referer"));
 }
+//[GET] /cart/update/:productId/:quantity
+module.exports.update = async (req, res) => {
 
+    const cartId = req.cookies.cartId;
+    const productId = req.params.productId;
+    const quantity = req.params.quantity;
+    await Cart.updateOne({
+        _id: cartId,
+        "products.product_id" : productId,
+    }, {
+        $set: {
+           "products.$.quantity" : quantity
+        } 
+    })
+    req.flash("success", "Cập nhật số lượng thành công");
+    res.redirect(req.get("Referer"));
+}

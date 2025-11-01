@@ -36,7 +36,7 @@ block main
                         name="quantity"
                         value= item.quantity
                         min="1"
-                        data-item-id= item.product_id
+                        product-id = item.product_id
                         style="width: 80px"
                         )
                     td #{item.totalPrice}$
@@ -47,3 +47,4 @@ block main
     h3.text-end.mt-4 Tổng đơn hàng: #{cartDetail.totalPrice}$
     .text-end.mt-3
       a.btn.btn-success(href="/checkout") Thanh toán
+  script(src="/client/js/cart.js") 
