@@ -7,7 +7,74 @@ block main
   +alert-success(5000)
   +alert-error(5000)
 
-  .container.my-3
+  .container.my-4
     .row
       .col-12
         +box-head('Đặt hàng thành công')
+
+    .row
+      .col-12
+        .alert.alert-success(role="alert")
+          | 🎉 Chúc mừng bạn đã đặt hàng thành công! Chúng tôi sẽ xử lý đơn hàng của bạn sớm nhất.
+
+    if order
+      // Thông tin cá nhân
+      .row.mt-4
+        .col-12.col-md-8.mx-auto
+          .card.shadow-sm
+            .card-header.bg-primary.text-white
+              h5.mb-0 Thông tin cá nhân
+            .card-body
+              table.table.table-bordered.mb-0
+                tbody
+                  tr
+                    td.w-25.text-muted Họ tên
+                    td 
+                      strong #{order.userInfo.fullName}
+                  tr
+                    td.text-muted Số điện thoại
+                    td 
+                      strong #{order.userInfo.phone}
+                  tr
+                    td.text-muted Địa chỉ
+                    td 
+                      strong #{order.userInfo.address}
+
+      // Thông tin đơn hàng
+      .row.mt-5
+        .col-12
+          .card.shadow-sm
+            .card-header.bg-success.text-white
+              h5.mb-0 Thông tin đơn hàng
+            .card-body.p-0
+              if order.products && order.products.length > 0
+                table.table.table-striped.table-hover.mb-0
+                  thead.table-light
+                    tr
+                      th.text-center(scope="col") STT
+                      th(scope="col") Ảnh
+                      th(scope="col") Tên
+                      th.text-end(scope="col") Giá
+                      th.text-center(scope="col") Số lượng
+                      th.text-end(scope="col") Tổng tiền
+                  tbody
+                    each item, index in order.products
+                      tr
+                        td.text-center #{index + 1}
+                        td
+                          img(
+                            src=item.productInfo.thumbnail
+                            alt=item.productInfo.title
+                            width="70"
+                            class="img-thumbnail"
+                          )
+                        td #{item.productInfo.title}
+                        td.text-end #{item.priceNew} $
+                        td.text-center #{item.quantity}
+                        td.text-end #{item.totalPrice} $
+                .p-3.text-end.bg-light.border-top
+                  h5.mb-0 
+                    | 💰 Tổng đơn hàng: 
+                    span.text-success #{order.totalPrice} $
+              else
+                .p-3.text-center.text-muted Không có sản phẩm nào trong đơn hàng.
