@@ -26,4 +26,39 @@ module.exports.registerPost = async (req,res)=>{
     res.cookie("tokenUser" , user.tokenUser)
 
     res.redirect("/");
-};      
+};    
+
+module.exports.login = (req,res)=>{
+    
+    res.render("client/pages/user/login" ,{
+        pageTitle :"Đăng nhập tài khoản"
+    } );
+}; 
+module.exports.loginPost = async (req,res)=>{
+    const user = await User.findOne({
+          email : req.body.email,  
+        //   password : md5(req.body.password),  
+          deleted : false
+    });
+
+    if(!user){
+        req.flash("error" ,"Email không tồn tại");
+        res.redirect("/user/login");
+        return;
+    }
+    if(!(md5(req.body.password) === user.password)){
+        req.flash("error" ,"Mật khẩu không đúng");
+        res.redirect("/user/login");
+        return;
+    }
+
+    if(user.status === "inactive"){
+        req.flash("error" ,"Tài khoản đang bị khóa");
+        res.redirect("/user/login");
+        return;
+    }
+
+    res.cookie("tokenUser" , user.tokenUser);
+    req.flash("success" ,"Đăng nhập thành công");
+    res.redirect("/");
+}; 
