@@ -1,17 +1,19 @@
 const mongoose = require("mongoose");
 const generate = require("../helpers/generate");
-const accountSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     fullName: String,
     email : String,
     password : String,
-    token : {
+    tokenUser : {
         type:String,
         default:generate.generateRandomString(20)
     },
     phone:String,
     avatar :String,
-    role_id : String , // lưu id của quyền vd: id quyền quản trị viên
-    status :String,
+    status :{
+        type:String,
+        default:"active"
+    },
     deleted: {
         type: Boolean,
         default: false
@@ -20,6 +22,6 @@ const accountSchema = new mongoose.Schema({
 }, {
     timestamps: true // hỗ trợ tự động thêm thời gian khi mình add hay update sản phẩm
 });
-const modelAccount = mongoose.model('modelAccount', accountSchema, "accounts");
+const modelUser = mongoose.model('modelmodelAccount', userSchema, "users");
 
-module.exports = modelAccount;
+module.exports = modelUser;
