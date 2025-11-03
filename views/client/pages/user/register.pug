@@ -1,0 +1,25 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main
+  +alert-error(500)
+
+  .container.my-5
+    .row.justify-content-center
+      .col-md-8.col-lg-6
+        h1.text-center.mb-4 Đăng ký tài khoản
+
+        form(action="/user/register", method="POST", novalidate)
+          .mb-3
+            label.form-label(for="fullName") Họ và tên
+            input#fullName.form-control(type="text", name="fullName", required)
+
+          .mb-3
+            label.form-label(for="email") Email
+            input#email.form-control(type="email", name="email", required)
+
+          .mb-3
+            label.form-label(for="password") Mật khẩu
+            input#password.form-control(type="password", name="password", required)
+
+          button.btn.btn-primary.w-100(type="submit") Đăng ký
