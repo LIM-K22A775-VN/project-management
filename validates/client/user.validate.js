@@ -31,3 +31,12 @@ module.exports.loginPost = async (req, res, next) => {
     }
     next();
 }
+module.exports.forgorPasswordPost = async (req, res, next) => {
+    if (!req.body.email) {
+        req.flash('error', `Vui lòng nhập email!`);
+         res.redirect(`/user/register`);
+        return;
+    }
+    
+    next();
+}

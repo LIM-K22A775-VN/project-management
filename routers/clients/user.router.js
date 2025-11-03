@@ -15,4 +15,10 @@ router.post("/login" ,
 router.get("/logout" ,controller.logout);
 
 
+router.get("/password/forgot" ,controller.forgotPassword);
+router.post("/password/forgot" ,
+    userValidate.forgorPasswordPost,
+    controller.forgotPasswordPost);
+
+
 module.exports = router;

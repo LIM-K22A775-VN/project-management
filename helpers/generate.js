@@ -13,3 +13,13 @@ module.exports.generateRandomString = (length)=>{
 // const { nanoid } = require('nanoid');
 // const id = nanoid();           // mặc định: chuỗi 21 ký tự
 // const shortId = nanoid(10);    // bạn có thể chỉnh độ dài tùy ý
+
+
+module.exports.generateRandomrateRandomNumber = (length)=>{
+    const character = "1234567890";
+    let result = "";
+    for (let i = 0; i < length; i++) {
+        result+= character.charAt(Math.floor(Math.random()*character.length));
+    }
+    return result;
+}
