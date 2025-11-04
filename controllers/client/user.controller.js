@@ -165,3 +165,11 @@ module.exports.resetPasswordPost = async (req, res) => {
     req.flash("success", "Đổi mật khẩu");
     res.redirect("/");
 };
+
+//[GET] /user/infor
+module.exports.infor = async (req, res) => {
+    // console.log(res.locals.user); //res.locals.user = user; trả về cho view thì dùng luôn user
+    res.render("client/pages/user/infor",{
+        pageTitle : "Thông tin tài khoản",
+    });
+};

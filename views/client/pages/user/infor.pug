@@ -1,0 +1,14 @@
+extends ../../layouts/default.pug 
+//- ke thua layout
+
+include ../../mixins/box-head.pug
+//- nhung box-head vao 
+
+include ../../mixins/product-layout.pug
+
+block main
+    .container.my-3
+        .row
+            .col-12
+                +box-head(pageTitle)
+        .div #{user}

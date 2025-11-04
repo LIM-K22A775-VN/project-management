@@ -2,6 +2,10 @@ const express = require("express");
 const router = express.Router();
 const controller = require("../../controllers/client/user.controller");
 const userValidate = require("../../validates/client/user.validate");
+
+// nhúng auth : bảo mật vào
+const authMiddelware = require("../../middlewares/client/auth.middelware");
+
 router.get("/register" ,controller.register);
 router.post("/register" ,
     userValidate.registerPost,
@@ -28,5 +32,8 @@ router.post("/password/reset" ,
     userValidate.resetPasswordPost,
     controller.resetPasswordPost);
 
+router.get("/infor" ,
+    authMiddelware.requireAuth,
+    controller.infor);
 
 module.exports = router;
