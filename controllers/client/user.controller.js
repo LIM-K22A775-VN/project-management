@@ -1,4 +1,5 @@
 const User = require("../../models/user.model");
+const Cart = require("../../models/cart.model");
 const ForgotPassword = require("../../models/forgot-password.model");
 const md5 = require("md5");
 const generateHelper = require("../../helpers/generate");
@@ -60,6 +61,35 @@ module.exports.loginPost = async (req, res) => {
         res.redirect("/user/login");
         return;
     }
+
+    // console.log(req.cookies.cartId);
+    // console.log(user.id);
+
+    const cart = await Cart.findOne({
+        user_id: user.id,
+    });
+    if (!cart) {
+        if (req.cookies.cartId) {
+            await Cart.updateOne({
+                _id: req.cookies.cartId,
+            }, {
+                user_id: user.id,
+            });
+        } else {
+            // Tạo giỏ hàng
+            const cart = new Cart({
+                user_id: user.id
+            });
+            await cart.save();
+            // lưu cartId vào cookie khi đăng nhập thành công 
+            const expiresCookies = 1000 * 60 * 60 * 24;
+            res.cookie("cartId", cart.id, {
+                expires: new Date(Date.now() + 365 * expiresCookies)
+            });
+        }
+    }
+
+
 
     res.cookie("tokenUser", user.tokenUser);
     req.flash("success", "Đăng nhập thành công");
@@ -169,7 +199,7 @@ module.exports.resetPasswordPost = async (req, res) => {
 //[GET] /user/infor
 module.exports.infor = async (req, res) => {
     // console.log(res.locals.user); //res.locals.user = user; trả về cho view thì dùng luôn user
-    res.render("client/pages/user/infor",{
-        pageTitle : "Thông tin tài khoản",
+    res.render("client/pages/user/infor", {
+        pageTitle: "Thông tin tài khoản",
     });
 };

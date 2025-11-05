@@ -4,8 +4,10 @@ const router = express.Router();
 
 const controller = require("../../controllers/client/cart.controller");
 
+const cartMiddleware = require("../../middlewares/client/cart.middleware");
 
-router.get("/" , controller.index);
+router.get("/" ,
+     controller.index);
 
 router.post('/add/:productId', controller.addPost );
 

@@ -3,33 +3,37 @@ const Product = require("../../models/product.model");
 const productsHelper = require("../../helpers/product");
 //[GET]  /cart
 module.exports.index = async (req, res) => {
+    try {
+        const cartId = req.cookies.cartId;
+        console.log(cartId);
+        const cart = await Cart.findOne({
+            _id: cartId
+        });
 
-    const cartId = req.cookies.cartId;
-    const cart = await Cart.findOne({
-        _id: cartId
-    });
+        if (cart.products.length > 0) {
+            for (const item of cart.products) {
+                const productId = item.product_id;
+                const productInfo = await Product.findOne({
+                    _id: productId,
+                    deleted: false
+                }).select("title thumbnail slug price discountPercentage");
 
-    if (cart.products.length > 0) {
-        for (const item of cart.products) {
-            const productId = item.product_id;
-            const productInfo = await Product.findOne({
-                _id: productId,
-                deleted: false
-            }).select("title thumbnail slug price discountPercentage");
+                productInfo.priceNew = productsHelper.priceNewProduct(productInfo);
 
-            productInfo.priceNew = productsHelper.priceNewProduct(productInfo);
+                item.productInfo = productInfo;
 
-            item.productInfo = productInfo;
-
-            item.totalPrice = productInfo.priceNew * item.quantity;
+                item.totalPrice = productInfo.priceNew * item.quantity;
+            }
         }
-    }
-    cart.totalPrice = cart.products.reduce((sum, item) => sum + item.totalPrice, 0);
+        cart.totalPrice = cart.products.reduce((sum, item) => sum + item.totalPrice, 0);
 
-    res.render("client/pages/cart/index", {
-        pageTitle: "Giỏ hàng",
-        cartDetail: cart
-    });
+        res.render("client/pages/cart/index", {
+            pageTitle: "Giỏ hàng",
+            cartDetail: cart
+        });
+    } catch (error) {
+        res.send("BUG");
+    }
 }
 
 //[POST] /cart/:productId
@@ -105,11 +109,11 @@ module.exports.update = async (req, res) => {
     const quantity = req.params.quantity;
     await Cart.updateOne({
         _id: cartId,
-        "products.product_id" : productId,
+        "products.product_id": productId,
     }, {
         $set: {
-           "products.$.quantity" : quantity
-        } 
+            "products.$.quantity": quantity
+        }
     })
     req.flash("success", "Cập nhật số lượng thành công");
     res.redirect(req.get("Referer"));

@@ -1,7 +1,6 @@
 const Cart = require("../../models/cart.model");
 
 module.exports.cartId = async (req, res, next) => {
-
     if(!req.cookies.cartId){
         // Tạo giỏ hàng
         const cart = new Cart();

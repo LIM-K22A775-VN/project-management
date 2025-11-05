@@ -32,6 +32,7 @@ router.post("/password/reset" ,
     userValidate.resetPasswordPost,
     controller.resetPasswordPost);
 
+//Private
 router.get("/infor" ,
     authMiddelware.requireAuth,
     controller.infor);
