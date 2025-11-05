@@ -5,7 +5,7 @@ const productsHelper = require("../../helpers/product");
 module.exports.index = async (req, res) => {
     try {
         const cartId = req.cookies.cartId;
-        console.log(cartId);
+        // console.log(cartId);
         const cart = await Cart.findOne({
             _id: cartId
         });

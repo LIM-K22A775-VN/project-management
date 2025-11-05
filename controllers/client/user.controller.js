@@ -64,29 +64,20 @@ module.exports.loginPost = async (req, res) => {
 
     // console.log(req.cookies.cartId);
     // console.log(user.id);
-
+    const expiresCookies = 1000 * 60 * 60 * 24;
     const cart = await Cart.findOne({
         user_id: user.id,
     });
     if (!cart) {
-        if (req.cookies.cartId) {
             await Cart.updateOne({
                 _id: req.cookies.cartId,
             }, {
                 user_id: user.id,
             });
-        } else {
-            // Tạo giỏ hàng
-            const cart = new Cart({
-                user_id: user.id
-            });
-            await cart.save();
-            // lưu cartId vào cookie khi đăng nhập thành công 
-            const expiresCookies = 1000 * 60 * 60 * 24;
-            res.cookie("cartId", cart.id, {
-                expires: new Date(Date.now() + 365 * expiresCookies)
-            });
-        }
+    } else {
+        res.cookie("cartId", cart.id, {
+            expires: new Date(Date.now() + 365 * expiresCookies)
+        });
     }
 
 
