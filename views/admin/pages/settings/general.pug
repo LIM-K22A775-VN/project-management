@@ -1,0 +1,99 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main
+  if role.permissions.includes("settings_view")
+    +alert-success("5000")
+    +alert-error("5000")
+
+    h1.mb-4 Cài đặt chung
+
+    form(
+      action=`${prefixAdmin}/settings/general?_method=PATCH`
+      method="POST"
+      enctype="multipart/form-data"
+      class="needs-validation"
+      novalidate
+    )
+      // Tên website
+      .mb-3
+        label.form-label(for="websiteName") Tên website
+        input#websiteName.form-control(
+          type="text",
+          name="websiteName",
+          placeholder="Nhập tên website",
+          value= settingGeneral? settingGeneral.websiteName : " "
+          required
+        )
+
+      // Upload ảnh (Logo)
+      .mb-3
+        label.form-label(for="logo") Logo
+        .d-flex.align-items-start.gap-3.flex-wrap(upload-image)
+          button.btn.btn-outline-secondary(type="button", fake-file) Chọn ảnh
+          input#logo.form-control-file(
+            type="file",
+            name="logo",
+            accept="image/*",
+            style="display:none",
+            upload-image-input
+          )
+        div.preview-wrapper(style="position: relative; display: inline-block;")
+            img(
+            src= settingGeneral? settingGeneral.logo : "",
+            alt="",
+            upload-image-preview,
+            class="image-preview"
+          )
+            button(
+            type="button",
+            upload-image-cancel,
+          ) X
+      // Số điện thoại
+      .mb-3
+        label.form-label(for="phone") Số điện thoại
+        input#phone.form-control(
+          type="text",
+          name="phone",
+          value = settingGeneral? settingGeneral.phone : ""
+          placeholder="Nhập số điện thoại"
+        )
+
+      // Email
+      .mb-3
+        label.form-label(for="email") Email
+        input#email.form-control(
+          type="email",
+          name="email",
+          value = settingGeneral? settingGeneral.email : ""
+          placeholder="Nhập email"
+        )
+
+      // Địa chỉ
+      .mb-3
+        label.form-label(for="address") Địa chỉ
+        input#address.form-control(
+          type="text",
+          name="address",
+          value =settingGeneral? settingGeneral.address :""
+          placeholder="Nhập địa chỉ"
+        )
+
+      // Copyright
+      .mb-3
+        label.form-label(for="copyright") Copyright
+        input#copyright.form-control(
+          type="text",
+          name="copyright",
+          value = settingGeneral?settingGeneral.copyright:""
+          placeholder="Nhập thông tin bản quyền"
+        )
+
+      // Submit button
+      .mt-4
+        button.btn.btn-primary(type="submit")
+          i.fas.fa-save.me-2
+          | Cập nhật
+
+  else
+    h1.text-danger.text-center.mt-5 Không có quyền truy cập

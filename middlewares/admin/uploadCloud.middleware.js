@@ -34,10 +34,8 @@ module.exports.upload = (req, res, next) => {
             // console.log(result.secure_url);
             // req.file.fieldname lấy ra name của type = file vd : thumbnail
             // req.body.thumbnail
-            // nếu là thumbnail thì gửi thumbnail
-                req.body.thumbnail = result.secure_url;
-             // nếu là avatar thì gửi thumbnail
-                req.body.avatar = result.secure_url;
+            req.body[req.file.fieldname] = result.secure_url;
+            // console.log(req.body);
             next();
         }
         upload(req);
@@ -45,3 +43,5 @@ module.exports.upload = (req, res, next) => {
         next();
     }
 }
+
+// → Khi bạn dùng upload.single("logo"), thì req.file.fieldname === "logo"
