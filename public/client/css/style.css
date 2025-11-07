@@ -218,3 +218,163 @@
 }
 
 /* show Alert  */
+
+
+/* Chat */ 
+/* Khung chat tổng thể */
+.chat {
+  max-width: 500px;
+  margin: 0 auto;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  display: flex;
+  flex-direction: column;
+  background: #fefefe;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Khung tin nhắn */
+.inner-body {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 450px;
+  overflow-y: auto;
+  background: #f9f9f9;
+}
+
+/* Tin nhắn nhận */
+.inner-body .inner-incoming {
+  background-color: #ffffff;
+  color: #333;
+  padding: 12px 18px;
+  border-radius: 20px 20px 20px 0;
+  max-width: 70%;
+  align-self: flex-start;
+  position: relative;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+  transition: transform 0.2s;
+}
+
+.inner-body .inner-incoming:hover {
+  transform: translateY(-1px);
+}
+
+/* Tên người gửi */
+.inner-body .inner-incoming .inner-name {
+  font-weight: 600;
+  font-size: 0.85em;
+  margin-bottom: 4px;
+  color: #555;
+}
+
+/* Tin nhắn gửi */
+.inner-body .inner-outgoing {
+  background-color: #FE5DA3;
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 20px 20px 0 20px;
+  max-width: 70%;
+  align-self: flex-end;
+  position: relative;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+  transition: transform 0.2s;
+}
+
+.inner-body .inner-outgoing:hover {
+  transform: translateY(-1px);
+}
+
+/* Scrollbar tinh tế */
+.inner-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.inner-body::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.15);
+  border-radius: 3px;
+}
+
+.inner-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Footer chat */
+.inner-foot {
+  border-top: 1px solid #eee;
+  padding: 12px;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+}
+
+/* Form nhập tin nhắn */
+.inner-form {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+}
+
+.inner-form input {
+  flex: 1;
+  height: 40px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  padding: 0 16px;
+  outline: none;
+  font-size: 0.95em;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.inner-form input:focus {
+  border-color: #FE5DA3;
+  box-shadow: 0 0 5px rgba(254, 93, 163, 0.3);
+}
+
+/* Button gửi */
+.inner-form button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background-color: #FE5DA3;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.inner-form button:hover {
+  background-color: #ff78b3;
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.inner-form button:active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.inner-form button i {
+  font-size: 18px;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+  .chat {
+    max-width: 100%;
+  }
+  .inner-body .inner-incoming,
+  .inner-body .inner-outgoing {
+    max-width: 85%;
+  }
+}
+/* fontawesome.com */
+
+/* END Chat */ 

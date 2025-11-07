@@ -1,0 +1,54 @@
+extends ../../layouts/default.pug
+
+include ../../mixins/box-head.pug
+include ../../mixins/alert.pug
+
+block main
+  +alert-success(5000)
+  +alert-error(5000)
+
+  .container.my-3
+    .row
+      .col-12
+        +box-head('Chat')
+
+    .inner-body
+      .inner-incoming
+        .inner-name My Love
+        .inner-content
+          | Hey, come to my house. There's no one home.
+
+      .inner-outgoing
+        .inner-content
+          | Really? Ok baby
+
+      .inner-incoming
+        .inner-name My Love
+        .inner-content
+          | Quick, quick, quick
+
+      .inner-outgoing
+        .inner-content
+          | My husband is here but where is he? The door is locked :(
+
+      .inner-incoming
+        .inner-name My Love
+        .inner-content
+          | I told you no one was home :)
+
+    .inner-foot
+       form(
+        class = "inner-form"
+        action="#"
+       )
+         input(
+            type ="text"
+            name ="chat"
+            id ="chat"
+            placeholder="Nhập nội dung"
+         ) 
+         button
+            i.fa-solid.fa-paper-plane 
+ 
+
+    
