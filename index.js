@@ -69,7 +69,17 @@ app.use(express.urlencoded({ extended: false }));
 // Routers
 router(app);
 routerAdmin(app);
-
+//thêm router 
+// * : các trường hợp còn lại . 404 : lỗi không tìm thấy đường dẫn
+// Middleware 404 - phải đặt cuối cùng
+app.use((req, res) => {
+  res.status(404).render("client/pages/errors/404", {
+    pageTitle: "404 Not Found"
+  });
+});
+// Dòng res.status(404)
+// Đặt HTTP status code cho response là 404 — tức là “Không tìm thấy trang” (Not Found).
+// Nếu bạn không đặt, Express sẽ mặc định gửi status 200 (OK), điều này sai với lỗi 404.
 // app.use(express.static('public'));
 
 app.listen(
