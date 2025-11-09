@@ -10,6 +10,8 @@ require("dotenv").config();
 
 
 
+
+
 // Ket noi database
 const database = require("./config/database");
 database.connect();
@@ -24,6 +26,18 @@ const routerAdmin = require("./routers/admin/index.router");
 const app = express()
 
 const port = process.env.PORT;  
+
+
+//Socket Io
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
+
+io.on('connection', (socket) => {
+  console.log('a user connected',socket.id);
+});
+//End Socket Io
 
 
 // app.set("views","./views");
@@ -82,7 +96,7 @@ app.use((req, res) => {
 // Nếu bạn không đặt, Express sẽ mặc định gửi status 200 (OK), điều này sai với lỗi 404.
 // app.use(express.static('public'));
 
-app.listen(
+server.listen(
     port , ()=>{
         console.log(`xample app listening on port ${port}`)
     }
