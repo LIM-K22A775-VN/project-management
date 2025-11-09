@@ -11,30 +11,33 @@ block main
     .row
       .col-12
         +box-head('Chat')
-
+    
     .inner-body
-      .inner-incoming
-        .inner-name My Love
-        .inner-content
-          | Hey, come to my house. There's no one home.
+      div #{chats}
+      each chat in chats
+        div(class = (chat.user_id == user.id ? "inner-outgoing"  : "inner-incoming"))
+          if(chat.user_id != user.id)
+            .inner-name #{chat.infoUser.fullName} 
+          .inner-content
+            | #{chat.content}
 
-      .inner-outgoing
-        .inner-content
-          | Really? Ok baby
+      //- .inner-outgoing
+      //-   .inner-content
+      //-     | Really? Ok baby
 
-      .inner-incoming
-        .inner-name My Love
-        .inner-content
-          | Quick, quick, quick
+      //- .inner-incoming
+      //-   .inner-name My Love
+      //-   .inner-content
+      //-     | Quick, quick, quick
 
-      .inner-outgoing
-        .inner-content
-          | My husband is here but where is he? The door is locked :(
+      //- .inner-outgoing
+      //-   .inner-content
+      //-     | My husband is here but where is he? The door is locked :(
 
-      .inner-incoming
-        .inner-name My Love
-        .inner-content
-          | I told you no one was home :)
+      //- .inner-incoming
+      //-   .inner-name My Love
+      //-   .inner-content
+      //-     | I told you no one was home :)
 
     .inner-foot
        form(
@@ -43,7 +46,7 @@ block main
        )
          input(
             type ="text"
-            name ="chat"
+            name ="content"
             id ="chat"
             placeholder="Nhập nội dung"
          ) 
