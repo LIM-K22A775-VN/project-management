@@ -11,6 +11,9 @@ const cartMiddleware = require("../../middlewares/client/cart.middleware");
 const userMiddleware = require("../../middlewares/client/user.middleware");
 const settingMiddleware = require("../../middlewares/client/setting.middelware");
 
+// nhúng auth : bảo mật vào
+const authMiddelware = require("../../middlewares/client/auth.middelware");
+
 module.exports = (app) => {
     
     app.use(categoryMiddleware.category);
@@ -25,5 +28,7 @@ module.exports = (app) => {
     app.use("/cart", cartRouter);
     app.use("/checkout", checkoutRouter);
     app.use("/user", userRouter);
-    app.use("/chat", chatRouter);
+    app.use("/chat",
+        authMiddelware.requireAuth,
+        chatRouter);
 }

@@ -33,10 +33,8 @@ const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
-
-io.on('connection', (socket) => {
-  console.log('a user connected',socket.id);
-});
+//trong express có global tạo ra 1 biến toàn cục cho cả app 
+global._io = io;
 //End Socket Io
 
 
