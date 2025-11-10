@@ -73,12 +73,32 @@ if (emojiPicker) {
     emojiPicker.addEventListener('emoji-click',
         (event) => {
             const icon = event.detail.unicode;
-            inputChat.value = inputChat.value + icon;  
+            inputChat.value = inputChat.value + icon;
         }
     );
+
+    // Input Key up 
+    inputChat.addEventListener("keyup",()=>{
+        socket.emit("CLIENT_SEND_TYPING", "show");
+    });
+    // EndInput Key up 
+
 }
 // End Insert Icon to Input 
-
-
 //  Show emoji-picker Chat
+
+
+
+// CLIENT_RETURN_TYPING 
+socket.on("CLIENT_RETURN_TYPING",(data)=>{
+    console.log(data);
+})
+
+// END CLIENT_RETURN_TYPING 
+
+
+
+
+
+
 // https://www.npmjs.com/package/emoji-picker-element/v/1.22.4?utm_source=chatgpt.com#usage
