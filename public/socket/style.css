@@ -1,0 +1,15 @@
+/* Emoji Icon  */
+.tooltip{
+    visibility: hidden; 
+}
+.tooltip.show{
+    visibility : visible;
+    opacity: 1; 
+
+}
+/* Emoji Icon  */
+
+/* opacity: 1; -> hiển thị  */
+
+/* visibility là thuộc tính dùng để ẩn hoặc hiển thị phần tử 
+mà vẫn giữ nguyên vị trí chiếm chỗ trong bố cục (layout). */
