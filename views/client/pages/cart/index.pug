@@ -3,48 +3,98 @@ include ../../mixins/box-head.pug
 include ../../mixins/alert.pug
 
 block main
-  .container.my-3
-    .row
-      .col-12
+  .container.my-4.cart-page
+    // Header giỏ hàng
+    .row.mb-3
+      .col-12.d-flex.justify-content-between.align-items-center
         +box-head("Giỏ hàng")
+        if cartDetail && cartDetail.products && cartDetail.products.length > 0
+          span.badge.bg-primary.cart-badge
+            | Sản phẩm: 
+            strong.ms-1 #{cartDetail.products.length}
 
+    // Nội dung giỏ hàng
     .row
       .col-12
-        table.table.table-bordered.align-middle
-          thead.table-light
-            tr
-              th(scope="col") STT
-              th(scope="col") Ảnh
-              th(scope="col") Tên
-              th(scope="col") Giá
-              th(scope="col") Số lượng
-              th(scope="col") Tổng tiền
-              th(scope="col") Hành động
-          tbody
-            if(cartDetail.products.length > 0)
-                each item , index in cartDetail.products
-                  tr      
-                    td #{index+1}
-                    td
-                        img(src= item.productInfo.thumbnail, alt=item.productInfo.title, width="80")
-                    td
-                        a.text-decoration-none(href=`/products/detail/${item.productInfo.slug}`) #{item.productInfo.title}
-                    td #{item.productInfo.priceNew}$
-                    td
-                        input.form-control(
-                        type="number"
-                        name="quantity"
-                        value= item.quantity
-                        min="1"
-                        product-id = item.product_id
-                        style="width: 80px"
-                        )
-                    td #{item.totalPrice}$
-                    td
-                        a.btn.btn-danger.btn-sm(href=`/cart/delete/${item.product_id}`) Xóa
-            else 
-               p Không có sản phẩm nào trong giỏ hàng.
-    h3.text-end.mt-4 Tổng đơn hàng: #{cartDetail.totalPrice}$
-    .text-end.mt-3
-      a.btn.btn-success(href="/checkout") Thanh toán
-  script(src="/client/js/cart.js") 
+        if cartDetail && cartDetail.products && cartDetail.products.length > 0
+          .card.cart-card.shadow-sm.border-0
+            .card-body.p-0
+              .table-responsive
+                table.table.table-hover.align-middle.mb-0.cart-table
+                  thead.table-light
+                    tr.text-center
+                      th(scope="col") #
+                      th(scope="col") Ảnh
+                      th(scope="col") Tên sản phẩm
+                      th(scope="col") Giá
+                      th(scope="col") Số lượng
+                      th(scope="col") Tổng tiền
+                      th(scope="col") Hành động
+                  tbody
+                    each item, index in cartDetail.products
+                      tr.cart-item
+                        // STT
+                        td.text-center.text-muted
+                          strong #{index + 1}
+
+                        // Ảnh sản phẩm
+                        td.text-center
+                          a(href=`/products/detail/${item.productInfo.slug}`)
+                            img.cart-item-thumbnail(
+                              src=item.productInfo.thumbnail,
+                              alt=item.productInfo.title
+                            )
+
+                        // Tên sản phẩm
+                        td
+                          a.text-decoration-none.fw-semibold.text-dark.cart-item-title(
+                            href=`/products/detail/${item.productInfo.slug}`
+                          ) #{item.productInfo.title}
+
+                        // Giá
+                        td.text-end
+                          span.cart-item-price #{item.productInfo.priceNew}$
+
+                        // Số lượng
+                        td.text-center
+                          input.form-control.form-control-sm.text-center.cart-item-quantity(
+                            type="number"
+                            name="quantity"
+                            value=item.quantity
+                            min="1"
+                            product-id=item.product_id
+                          )
+
+                        // Tổng tiền
+                        td.text-end
+                          span.fw-bold.cart-item-total #{item.totalPrice}$
+
+                        // Hành động
+                        td.text-center
+                          a.btn.btn-outline-danger.btn-sm.cart-item-remove(
+                            href=`/cart/delete/${item.product_id}`
+                          ) Xóa
+
+          // Tổng đơn + hành động
+          .row.mt-4
+            .col-md-6.mb-3.mb-md-0
+              a.btn.btn-outline-secondary(href="/products")
+                | ← Tiếp tục mua sắm
+            .col-md-6.text-md-end
+              h4.mb-2.cart-total-title
+                span.me-2.text-muted Tổng đơn hàng:
+                span.fw-bold.text-success.cart-total-price #{cartDetail.totalPrice}$
+              a.btn.btn-success.btn-lg.mt-1(href="/checkout")
+                | Thanh toán
+
+        else
+          // Trường hợp giỏ hàng trống
+          .card.shadow-sm.border-0.text-center.py-5.cart-empty
+            .card-body
+              h4.mb-2 Giỏ hàng của bạn đang trống
+              p.text-muted.mb-4
+                | Hãy chọn vài sản phẩm để thêm vào giỏ hàng nhé.
+              a.btn.btn-primary(href="/products")
+                | Xem sản phẩm
+
+  script(src="/client/js/cart.js")

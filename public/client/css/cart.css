@@ -1,0 +1,81 @@
+/* ============ CART PAGE ============ */
+
+/* Bọc trang giỏ hàng */
+.cart-page {
+  margin-top: 24px;
+  margin-bottom: 40px;
+}
+
+/* Card chứa bảng giỏ hàng */
+.cart-card {
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.06);
+  overflow: hidden;
+  background: #fff;
+}
+
+/* Bảng giỏ hàng */
+.cart-table thead tr {
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 0.03em;
+}
+
+.cart-table tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+/* Ảnh sản phẩm trong giỏ hàng – CHỖ LÀM ẢNH NHỎ LẠI */
+.cart-item-thumbnail {
+  max-width: 60px;        /* Giảm kích thước ở đây */
+  max-height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid #eee;
+}
+
+/* Tên sản phẩm */
+.cart-item-title {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* Giá, tổng tiền */
+.cart-item-price,
+.cart-item-total {
+  font-size: 14px;
+}
+
+/* Input số lượng */
+.cart-item-quantity {
+  width: 72px;
+  padding-inline: 8px;
+  margin: 0 auto;
+}
+
+/* Nút xóa */
+.cart-item-remove {
+  font-size: 13px;
+}
+
+/* Tổng đơn hàng */
+.cart-total-title {
+  font-size: 16px;
+}
+
+.cart-total-price {
+  font-size: 22px;
+}
+
+/* Badge tổng sản phẩm */
+.cart-badge {
+  font-size: 13px;
+  padding: 6px 10px;
+}
+
+/* Giỏ hàng trống */
+.cart-empty {
+  max-width: 480px;
+  margin: 0 auto;
+}
